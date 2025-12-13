@@ -1,4 +1,11 @@
 import { ChessBishop, ChessKing, ChessKnight, ChessPawn, ChessQueen, ChessRook } from "lucide-react"
+import { BoardCellData } from "../board"
+import { PawnMoveset } from "./Movesets/PawnMoveset"
+import { QueenMoveset } from "./Movesets/QueenMoveset"
+import { BishopMoveset } from "./Movesets/BishopMoveset"
+import { RookMoveset } from "./Movesets/RookMoveset"
+import { KingMoveset } from "./Movesets/KingMoveset"
+import { KnightMoveset } from "./Movesets/KnightMoveset"
 
 export type Pieces = {
     King: PieceData
@@ -10,7 +17,7 @@ export type Pieces = {
 }
 
 export type PieceData = {
-    moveset: string
+    moveset: ((board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean) => void) | null
     owner: 'white' | 'black' | null
     icon: React.ReactNode
 }
@@ -19,30 +26,30 @@ export type PieceData = {
 export const King: Pieces['King'] = {
     icon: <ChessKing />,
     owner: null,
-    moveset: "fodase"
+    moveset: KingMoveset
 }
 export const Queen: Pieces['Queen'] = {
     icon: <ChessQueen />,
     owner: null,
-    moveset: "fodase"
+    moveset: QueenMoveset
 }
 export const Rook: Pieces['Rook'] = {
     icon: <ChessRook />,
     owner: null,
-    moveset: "fodase"
+    moveset: RookMoveset
 }
 export const Bishop: Pieces['Bishop'] = {
     icon: <ChessBishop />,
     owner: null,
-    moveset: "fodase"
+    moveset: BishopMoveset
 }
 export const Knight: Pieces['Knight'] = {
     icon: <ChessKnight />,
     owner: null,
-    moveset: "fodase"
+    moveset: KnightMoveset
 }
 export const Pawn: Pieces['Pawn'] = {
     icon: <ChessPawn />,
     owner: null,
-    moveset: "fodase"
+    moveset: PawnMoveset
 } 
