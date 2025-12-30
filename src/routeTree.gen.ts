@@ -9,68 +9,183 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PlayIndexRouteImport } from './routes/play/index'
-import { Route as PlayRoleRouteImport } from './routes/play/$role'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
+import { Route as playMatchIdRouteImport } from './routes/(play)/$matchId'
+import { Route as loginLoginRouteImport } from './routes/(login)/login'
+import { Route as playMatchIndexRouteImport } from './routes/(play)/match/index'
+import { Route as ProfileMatchesHistoryListRouteImport } from './routes/profile/matches-history/list'
+import { Route as ProfileMatchesHistoryRewindRewindIdRouteImport } from './routes/profile/matches-history/rewind/$rewindId'
 
-const PlayIndexRoute = PlayIndexRouteImport.update({
-  id: '/play/',
-  path: '/play/',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlayRoleRoute = PlayRoleRouteImport.update({
-  id: '/play/$role',
-  path: '/play/$role',
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const playMatchIdRoute = playMatchIdRouteImport.update({
+  id: '/(play)/$matchId',
+  path: '/$matchId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const loginLoginRoute = loginLoginRouteImport.update({
+  id: '/(login)/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const playMatchIndexRoute = playMatchIndexRouteImport.update({
+  id: '/(play)/match/',
+  path: '/match/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileMatchesHistoryListRoute =
+  ProfileMatchesHistoryListRouteImport.update({
+    id: '/profile/matches-history/list',
+    path: '/profile/matches-history/list',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProfileMatchesHistoryRewindRewindIdRoute =
+  ProfileMatchesHistoryRewindRewindIdRouteImport.update({
+    id: '/profile/matches-history/rewind/$rewindId',
+    path: '/profile/matches-history/rewind/$rewindId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/play/$role': typeof PlayRoleRoute
-  '/play': typeof PlayIndexRoute
+  '/': typeof IndexRoute
+  '/login': typeof loginLoginRoute
+  '/$matchId': typeof playMatchIdRoute
+  '/profile': typeof ProfileIndexRoute
+  '/profile/matches-history/list': typeof ProfileMatchesHistoryListRoute
+  '/match': typeof playMatchIndexRoute
+  '/profile/matches-history/rewind/$rewindId': typeof ProfileMatchesHistoryRewindRewindIdRoute
 }
 export interface FileRoutesByTo {
-  '/play/$role': typeof PlayRoleRoute
-  '/play': typeof PlayIndexRoute
+  '/': typeof IndexRoute
+  '/login': typeof loginLoginRoute
+  '/$matchId': typeof playMatchIdRoute
+  '/profile': typeof ProfileIndexRoute
+  '/profile/matches-history/list': typeof ProfileMatchesHistoryListRoute
+  '/match': typeof playMatchIndexRoute
+  '/profile/matches-history/rewind/$rewindId': typeof ProfileMatchesHistoryRewindRewindIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/play/$role': typeof PlayRoleRoute
-  '/play/': typeof PlayIndexRoute
+  '/': typeof IndexRoute
+  '/(login)/login': typeof loginLoginRoute
+  '/(play)/$matchId': typeof playMatchIdRoute
+  '/profile/': typeof ProfileIndexRoute
+  '/profile/matches-history/list': typeof ProfileMatchesHistoryListRoute
+  '/(play)/match/': typeof playMatchIndexRoute
+  '/profile/matches-history/rewind/$rewindId': typeof ProfileMatchesHistoryRewindRewindIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/play/$role' | '/play'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/$matchId'
+    | '/profile'
+    | '/profile/matches-history/list'
+    | '/match'
+    | '/profile/matches-history/rewind/$rewindId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/play/$role' | '/play'
-  id: '__root__' | '/play/$role' | '/play/'
+  to:
+    | '/'
+    | '/login'
+    | '/$matchId'
+    | '/profile'
+    | '/profile/matches-history/list'
+    | '/match'
+    | '/profile/matches-history/rewind/$rewindId'
+  id:
+    | '__root__'
+    | '/'
+    | '/(login)/login'
+    | '/(play)/$matchId'
+    | '/profile/'
+    | '/profile/matches-history/list'
+    | '/(play)/match/'
+    | '/profile/matches-history/rewind/$rewindId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  PlayRoleRoute: typeof PlayRoleRoute
-  PlayIndexRoute: typeof PlayIndexRoute
+  IndexRoute: typeof IndexRoute
+  loginLoginRoute: typeof loginLoginRoute
+  playMatchIdRoute: typeof playMatchIdRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
+  ProfileMatchesHistoryListRoute: typeof ProfileMatchesHistoryListRoute
+  playMatchIndexRoute: typeof playMatchIndexRoute
+  ProfileMatchesHistoryRewindRewindIdRoute: typeof ProfileMatchesHistoryRewindRewindIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/play/': {
-      id: '/play/'
-      path: '/play'
-      fullPath: '/play'
-      preLoaderRoute: typeof PlayIndexRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/play/$role': {
-      id: '/play/$role'
-      path: '/play/$role'
-      fullPath: '/play/$role'
-      preLoaderRoute: typeof PlayRoleRouteImport
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(play)/$matchId': {
+      id: '/(play)/$matchId'
+      path: '/$matchId'
+      fullPath: '/$matchId'
+      preLoaderRoute: typeof playMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(login)/login': {
+      id: '/(login)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof loginLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(play)/match/': {
+      id: '/(play)/match/'
+      path: '/match'
+      fullPath: '/match'
+      preLoaderRoute: typeof playMatchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/matches-history/list': {
+      id: '/profile/matches-history/list'
+      path: '/profile/matches-history/list'
+      fullPath: '/profile/matches-history/list'
+      preLoaderRoute: typeof ProfileMatchesHistoryListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/matches-history/rewind/$rewindId': {
+      id: '/profile/matches-history/rewind/$rewindId'
+      path: '/profile/matches-history/rewind/$rewindId'
+      fullPath: '/profile/matches-history/rewind/$rewindId'
+      preLoaderRoute: typeof ProfileMatchesHistoryRewindRewindIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  PlayRoleRoute: PlayRoleRoute,
-  PlayIndexRoute: PlayIndexRoute,
+  IndexRoute: IndexRoute,
+  loginLoginRoute: loginLoginRoute,
+  playMatchIdRoute: playMatchIdRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
+  ProfileMatchesHistoryListRoute: ProfileMatchesHistoryListRoute,
+  playMatchIndexRoute: playMatchIndexRoute,
+  ProfileMatchesHistoryRewindRewindIdRoute:
+    ProfileMatchesHistoryRewindRewindIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
