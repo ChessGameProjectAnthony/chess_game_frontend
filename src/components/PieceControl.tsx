@@ -2,6 +2,7 @@ import { JSX, SetStateAction } from "react";
 import { BoardCellData } from "../helpers/board";
 import { cn } from "../helpers/cn";
 import { HandleMovePiece } from "../helpers/pieces/ShowMove";
+import { PlayerTypes } from "./Gameboard";
 
 export enum CellActions {
     move = "move",
@@ -16,10 +17,11 @@ type Props = {
     currentPiece?: BoardCellData | null
     update: React.Dispatch<SetStateAction<BoardCellData[][]>>,
     updateCapturedPieces: React.Dispatch<SetStateAction<BoardCellData['piece'][]>>
+    playerRole: PlayerTypes
 
 } & JSX.IntrinsicElements['div']
 
-export default function PieceControl({ cellData, isSelected, update, updateCapturedPieces, currentPiece, ...rest }: Props) {
+export default function PieceControl({ cellData, isSelected, update, updateCapturedPieces, playerRole, currentPiece, ...rest }: Props) {
     return (
         <div className="group flex w-full h-full  items-center justify-center"
             id={cellData.cell}
@@ -33,11 +35,11 @@ export default function PieceControl({ cellData, isSelected, update, updateCaptu
                     `group-data-[possible=attack]:bg-red-600`
                 )}
                 onClick={() => {
-                    HandleMovePiece(update, updateCapturedPieces, cellData, currentPiece)
+                    HandleMovePiece(update, updateCapturedPieces, playerRole, cellData, currentPiece)
                 }}
             />
             <p className={cn("[&>svg]:size-8 transition-all duration-500  ease-in-out",
-                cellData.piece?.owner == 'white' && "group-hover:[&>svg]:size-12 cursor-pointer",
+                cellData.piece?.owner == playerRole && "group-hover:[&>svg]:size-12 cursor-pointer",
                 isSelected && "[&>svg]:size-12",
                 cellData?.piece?.owner == 'white' ? "text-white" : "text-black")} >{cellData?.piece?.icon}</p>
         </div >

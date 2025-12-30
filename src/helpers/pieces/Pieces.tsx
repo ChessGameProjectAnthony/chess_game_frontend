@@ -6,6 +6,7 @@ import { BishopMoveset } from "./Movesets/BishopMoveset"
 import { RookMoveset } from "./Movesets/RookMoveset"
 import { KingMoveset } from "./Movesets/KingMoveset"
 import { KnightMoveset } from "./Movesets/KnightMoveset"
+import { PlayerTypes } from "../../components/Gameboard"
 
 export type Pieces = {
     King: PieceData
@@ -17,7 +18,7 @@ export type Pieces = {
 }
 
 export type PieceData = {
-    moveset: ((board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean) => void) | null
+    moveset: (board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes) => void
     owner: 'white' | 'black' | null
     icon: React.ReactNode
 }

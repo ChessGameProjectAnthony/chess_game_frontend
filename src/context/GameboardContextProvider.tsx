@@ -7,16 +7,21 @@ type GameboardProviderProps = {
 };
 
 export function GameboardProvider({ children }: GameboardProviderProps) {
-    const [board, setBoard] = useState<BoardCellData[][]>(
-        fillBoardToStartMatch(mountBoard())
-    );
+    const [board, setBoard] = useState<BoardCellData[][]>([]);
+    function generateFilledGameBoard(userRole: string) {
+        const user = userRole == 'white'
+        setBoard(fillBoardToStartMatch(mountBoard(user), user))
+    }
+
     const [CapturedPieces, setCapturedPieces] = useState<BoardCellData['piece'][]>([])
+
 
     const value: GameboardContextProps = {
         board,
         update: setBoard,
         CapturedPieces,
-        updateCapturedPieces: setCapturedPieces
+        generateFilledGameBoard,
+        updateCapturedPieces: setCapturedPieces,
     }
     return (
         <GameboardContext.Provider value={value}>

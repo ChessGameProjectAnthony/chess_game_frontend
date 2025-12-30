@@ -1,14 +1,20 @@
-import { useState } from "react"
-import { BoardCellData, mountBoard } from "../helpers/board"
+import { useMemo, useState } from "react"
+import { BoardCellData } from "../helpers/board"
 import { cn } from "../helpers/cn"
-import PieceControl from "./PieceControl"
-import { HandleMovePiece } from "../helpers/pieces/ShowMove"
 import { useGameboardContext } from "../hooks/useGameboardContext"
 import PiecesCaptured from "./PiecesCaptured"
+import PieceControl from "./PieceControl"
 
-export default function Gameboard() {
+export type PlayerTypes = 'white' | 'black'
+export type GameboarProps = {
+    playerRole: PlayerTypes
+}
+
+
+export default function Gameboard({ playerRole }: GameboarProps) {
     const [currentSelected, setCurrentSelected] = useState<BoardCellData | null>()
-    const { board, update: updateBoard, updateCapturedPieces } = useGameboardContext()
+    const { board, update: updateBoard, updateCapturedPieces, generateFilledGameBoard } = useGameboardContext()
+    useMemo(() => generateFilledGameBoard(playerRole), [playerRole])
 
     function shouldBeWhite(column: number, row: number): boolean {
         if (column % 2 == 0) {
@@ -18,20 +24,20 @@ export default function Gameboard() {
     }
 
     function handleDisplayMove(current: BoardCellData) {
-        if (current.cell == currentSelected?.cell || current.piece == null || current.piece.owner != 'white') {
-            currentSelected?.piece?.moveset!(board, currentSelected.cellMatrizIndex, false)
+        if (current.cell == currentSelected?.cell || current.piece == null || current.piece.owner != playerRole) {
+            currentSelected?.piece?.moveset(board, currentSelected.cellMatrizIndex, false, playerRole)
             setCurrentSelected(null)
             return
         }
         setCurrentSelected(current)
 
-        current.piece!.moveset!(board, current.cellMatrizIndex, true)
+        current.piece!.moveset(board, current.cellMatrizIndex, true, playerRole)
     }
 
 
     return (
         <div className="flex flex-col justify-center gap-2">
-            <PiecesCaptured />
+            <PiecesCaptured isWhite={playerRole != 'white'} />
             <div className="flex flex-col justify-center items-center" id="board-container">
                 {board.map((column, columnIndex) => (
                     <div
@@ -46,10 +52,11 @@ export default function Gameboard() {
 
                                 <PieceControl
                                     onClick={() => handleDisplayMove(cell)}
-                                    isSelected={cell.cell == currentSelected?.cell && cell.piece?.owner == 'white'}
+                                    isSelected={cell.cell == currentSelected?.cell && cell.piece?.owner == playerRole}
                                     currentPiece={currentSelected}
                                     update={updateBoard}
                                     updateCapturedPieces={updateCapturedPieces}
+                                    playerRole={playerRole}
                                     cellData={cell} />
                             </div>
 
@@ -57,7 +64,7 @@ export default function Gameboard() {
                     </div>
                 ))}
             </div >
-            <PiecesCaptured isWhite />
+            <PiecesCaptured isWhite={playerRole == 'white'} />
         </div>
     )
 

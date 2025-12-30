@@ -6,12 +6,12 @@ export type BoardCellData = {
     piece?: Pieces[keyof Pieces] | null
 }
 
-export function mountBoard(): BoardCellData[][] {
+export function mountBoard(playerRole: boolean): BoardCellData[][] {
     const alphabetRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-    const numberColumns = ['1', '2', '3', '4', '5', '6', '7', '8'].reverse()
+    const numberColumns = ['8', '7', '6', '5', '4', '3', '2', '1']
 
-    return Array.from(numberColumns, (letter, rowIndex) =>
-        Array.from(alphabetRows.map((num, columnIndex) => ({
+    return Array.from(playerRole ? numberColumns : numberColumns.reverse(), (letter, rowIndex) =>
+        Array.from((playerRole ? alphabetRows : alphabetRows.reverse()).map((num, columnIndex) => ({
             cell: `${letter}${num}`,
             cellMatrizIndex: [rowIndex, columnIndex],
             piece: null
@@ -19,12 +19,16 @@ export function mountBoard(): BoardCellData[][] {
     )
 }
 
-export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[][] {
+export function fillBoardToStartMatch(board: BoardCellData[][], isWhite: boolean): BoardCellData[][] {
+    const oponentRole = isWhite ? 'black' : 'white'
+    const playerRole = isWhite ? 'white' : 'black'
     board[1].map(cell => cell.piece = {
         icon: Pawn.icon,
         moveset: Pawn.moveset,
-        owner: 'black'
+        owner: oponentRole
     })
+
+
     board[0] = [
         {
             cell: board[0][0].cell,
@@ -32,7 +36,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
             piece: {
                 icon: Rook.icon,
                 moveset: Rook.moveset,
-                owner: 'black'
+                owner: oponentRole
             }
         },
         {
@@ -41,7 +45,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
             piece: {
                 icon: Knight.icon,
                 moveset: Knight.moveset,
-                owner: 'black'
+                owner: oponentRole
             }
         },
         {
@@ -50,27 +54,26 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
             piece: {
                 icon: Bishop.icon,
                 moveset: Bishop.moveset,
-                owner: 'black'
+                owner: oponentRole
             }
         },
         {
             cell: board[0][3].cell,
             cellMatrizIndex: [0, 3],
 
-
-            piece: {
-                icon: King.icon,
-                moveset: King.moveset,
-                owner: 'black'
-            }
-        }, {
-            cell: board[0][4].cell,
-            cellMatrizIndex: [0, 4],
-
             piece: {
                 icon: Queen.icon,
                 moveset: Queen.moveset,
-                owner: 'black'
+                owner: oponentRole
+            }
+        },
+        {
+            cell: board[0][4].cell,
+            cellMatrizIndex: [0, 4],
+            piece: {
+                icon: King.icon,
+                moveset: King.moveset,
+                owner: oponentRole
             }
         },
         {
@@ -80,7 +83,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
             piece: {
                 icon: Bishop.icon,
                 moveset: Bishop.moveset,
-                owner: 'black'
+                owner: oponentRole
             }
         },
         {
@@ -90,7 +93,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
             piece: {
                 icon: Knight.icon,
                 moveset: Knight.moveset,
-                owner: 'black'
+                owner: oponentRole
             }
         },
         {
@@ -100,7 +103,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
             piece: {
                 icon: Rook.icon,
                 moveset: Rook.moveset,
-                owner: 'black'
+                owner: oponentRole
             }
         }
 
@@ -110,7 +113,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
     board[6].map(cell => cell.piece = {
         icon: Pawn.icon,
         moveset: Pawn.moveset,
-        owner: 'white'
+        owner: playerRole
     })
     board[7] = [{
         cell: board[7][0].cell,
@@ -118,7 +121,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         piece: {
             icon: Rook.icon,
             moveset: Rook.moveset,
-            owner: 'white'
+            owner: playerRole
         }
     },
     {
@@ -128,7 +131,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         piece: {
             icon: Knight.icon,
             moveset: Knight.moveset,
-            owner: 'white'
+            owner: playerRole
         }
     },
     {
@@ -138,7 +141,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         piece: {
             icon: Bishop.icon,
             moveset: Bishop.moveset,
-            owner: 'white'
+            owner: playerRole
         }
     },
     {
@@ -146,9 +149,9 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         cellMatrizIndex: [7, 3],
 
         piece: {
-            icon: Queen.icon,
-            moveset: Queen.moveset,
-            owner: 'white'
+            icon: King.icon,
+            moveset: King.moveset,
+            owner: playerRole
         }
     },
     {
@@ -156,11 +159,12 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         cellMatrizIndex: [7, 4],
 
         piece: {
-            icon: King.icon,
-            moveset: King.moveset,
-            owner: 'white'
+            icon: Queen.icon,
+            moveset: Queen.moveset,
+            owner: playerRole
         }
     },
+
     {
         cell: board[7][5].cell,
         cellMatrizIndex: [7, 5],
@@ -168,7 +172,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         piece: {
             icon: Bishop.icon,
             moveset: Bishop.moveset,
-            owner: 'white'
+            owner: playerRole
         }
     },
     {
@@ -178,7 +182,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         piece: {
             icon: Knight.icon,
             moveset: Knight.moveset,
-            owner: 'white'
+            owner: playerRole
         }
     },
     {
@@ -188,7 +192,7 @@ export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[]
         piece: {
             icon: Rook.icon,
             moveset: Rook.moveset,
-            owner: 'white'
+            owner: playerRole
         }
     }]
     return board

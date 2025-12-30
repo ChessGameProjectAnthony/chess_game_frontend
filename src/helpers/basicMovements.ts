@@ -1,3 +1,4 @@
+import { PlayerTypes } from "../components/Gameboard";
 import { BoardCellData } from "./board"
 
 export const DIAGONAL_DIRECTIONS_TUPPLE = [
@@ -14,7 +15,7 @@ export const VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE = [
     [0, 1],
 ] as const
 
-export function verticalAndHorizontalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex']): BoardCellData[] {
+export function verticalAndHorizontalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: PlayerTypes): BoardCellData[] {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE) {
@@ -27,7 +28,7 @@ export function verticalAndHorizontalMovement(board: BoardCellData[][], currentP
             if (!cell.piece) {
                 valids.push(cell);
             } else {
-                if (cell.piece.owner !== 'white') {
+                if (cell.piece.owner !== playerRole) {
                     valids.push(cell);
                 }
                 break;
@@ -41,7 +42,7 @@ export function verticalAndHorizontalMovement(board: BoardCellData[][], currentP
     return valids;
 }
 
-export function diagonalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex']): BoardCellData[] {
+export function diagonalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: PlayerTypes): BoardCellData[] {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of DIAGONAL_DIRECTIONS_TUPPLE) {
@@ -54,7 +55,7 @@ export function diagonalMovement(board: BoardCellData[][], currentPosition: Boar
             if (!cell.piece) {
                 valids.push(cell);
             } else {
-                if (cell.piece.owner !== 'white') {
+                if (cell.piece.owner !== playerRole) {
                     valids.push(cell);
                 }
                 break;

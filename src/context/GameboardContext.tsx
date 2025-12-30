@@ -8,6 +8,7 @@ export type GameboardContextProps = {
 
     updateCapturedPieces: React.Dispatch<SetStateAction<BoardCellData['piece'][]>>
     board: BoardCellData[][]
+    generateFilledGameBoard: (userRole: string) => void
 };
 
 export const GameboardContext = createContext<GameboardContextProps | null>(null);

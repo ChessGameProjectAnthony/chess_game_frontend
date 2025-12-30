@@ -1,8 +1,9 @@
+import { PlayerTypes } from "../../../components/Gameboard";
 import { DIAGONAL_DIRECTIONS_TUPPLE, VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE } from "../../basicMovements";
 import { BoardCellData } from "../../board";
 import { ShowMove } from "../ShowMove";
 
-export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean) {
+export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes) {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE) {
@@ -15,7 +16,7 @@ export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCell
             if (!cell.piece) {
                 valids.push(cell);
             } else {
-                if (cell.piece.owner !== 'white') {
+                if (cell.piece.owner !== playerRole) {
                     valids.push(cell);
                 }
                 break;
@@ -32,7 +33,7 @@ export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCell
                 if (!cell.piece) {
                     valids.push(cell);
                 } else {
-                    if (cell.piece.owner !== 'white') {
+                    if (cell.piece.owner !== playerRole) {
                         valids.push(cell);
                     }
                     break;
@@ -42,5 +43,5 @@ export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCell
         }
     }
 
-    ShowMove(valids, isValidPiece)
+    ShowMove(valids, isValidPiece, playerRole)
 }
