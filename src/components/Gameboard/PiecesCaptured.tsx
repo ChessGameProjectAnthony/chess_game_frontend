@@ -1,5 +1,5 @@
-import { cn } from "../helpers/cn"
-import { useGameboardContext } from "../hooks/useGameboardContext"
+import { cn } from "../../helpers/cn"
+import { useGameboardContext } from "../../hooks/useGameboardContext"
 
 type Props = {
     isWhite?: boolean

@@ -10,117 +10,150 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProfileIndexRouteImport } from './routes/profile/index'
-import { Route as playMatchIdRouteImport } from './routes/(play)/$matchId'
-import { Route as loginLoginRouteImport } from './routes/(login)/login'
-import { Route as playMatchIndexRouteImport } from './routes/(play)/match/index'
-import { Route as ProfileMatchesHistoryListRouteImport } from './routes/profile/matches-history/list'
-import { Route as ProfileMatchesHistoryRewindRewindIdRouteImport } from './routes/profile/matches-history/rewind/$rewindId'
+import { Route as authenticatedlayoutRouteRouteImport } from './routes/(authenticated)/(layout)/route'
+import { Route as authenticatedMatchQueueRouteImport } from './routes/(authenticated)/match/queue'
+import { Route as authenticatedMatchMatchIdRouteImport } from './routes/(authenticated)/match/$matchId'
+import { Route as authenticatedlayoutHomeRouteImport } from './routes/(authenticated)/(layout)/home'
+import { Route as authenticatedlayoutProfileIndexRouteImport } from './routes/(authenticated)/(layout)/profile/index'
+import { Route as authenticatedlayoutPlayIndexRouteImport } from './routes/(authenticated)/(layout)/play/index'
+import { Route as authenticatedlayoutloginLoginRouteImport } from './routes/(authenticated)/(layout)/(login)/login'
+import { Route as authenticatedlayoutProfileManageAccountIndexRouteImport } from './routes/(authenticated)/(layout)/profile/manage-account/index'
+import { Route as authenticatedlayoutProfileMatchesHistoryRewindIdRouteImport } from './routes/(authenticated)/(layout)/profile/matches-history/$rewindId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileIndexRoute = ProfileIndexRouteImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const playMatchIdRoute = playMatchIdRouteImport.update({
-  id: '/(play)/$matchId',
-  path: '/$matchId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const loginLoginRoute = loginLoginRouteImport.update({
-  id: '/(login)/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const playMatchIndexRoute = playMatchIndexRouteImport.update({
-  id: '/(play)/match/',
-  path: '/match/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileMatchesHistoryListRoute =
-  ProfileMatchesHistoryListRouteImport.update({
-    id: '/profile/matches-history/list',
-    path: '/profile/matches-history/list',
+const authenticatedlayoutRouteRoute =
+  authenticatedlayoutRouteRouteImport.update({
+    id: '/(authenticated)/(layout)',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ProfileMatchesHistoryRewindRewindIdRoute =
-  ProfileMatchesHistoryRewindRewindIdRouteImport.update({
-    id: '/profile/matches-history/rewind/$rewindId',
-    path: '/profile/matches-history/rewind/$rewindId',
+const authenticatedMatchQueueRoute = authenticatedMatchQueueRouteImport.update({
+  id: '/(authenticated)/match/queue',
+  path: '/match/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authenticatedMatchMatchIdRoute =
+  authenticatedMatchMatchIdRouteImport.update({
+    id: '/(authenticated)/match/$matchId',
+    path: '/match/$matchId',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const authenticatedlayoutHomeRoute = authenticatedlayoutHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => authenticatedlayoutRouteRoute,
+} as any)
+const authenticatedlayoutProfileIndexRoute =
+  authenticatedlayoutProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => authenticatedlayoutRouteRoute,
+  } as any)
+const authenticatedlayoutPlayIndexRoute =
+  authenticatedlayoutPlayIndexRouteImport.update({
+    id: '/play/',
+    path: '/play/',
+    getParentRoute: () => authenticatedlayoutRouteRoute,
+  } as any)
+const authenticatedlayoutloginLoginRoute =
+  authenticatedlayoutloginLoginRouteImport.update({
+    id: '/(login)/login',
+    path: '/login',
+    getParentRoute: () => authenticatedlayoutRouteRoute,
+  } as any)
+const authenticatedlayoutProfileManageAccountIndexRoute =
+  authenticatedlayoutProfileManageAccountIndexRouteImport.update({
+    id: '/profile/manage-account/',
+    path: '/profile/manage-account/',
+    getParentRoute: () => authenticatedlayoutRouteRoute,
+  } as any)
+const authenticatedlayoutProfileMatchesHistoryRewindIdRoute =
+  authenticatedlayoutProfileMatchesHistoryRewindIdRouteImport.update({
+    id: '/profile/matches-history/$rewindId',
+    path: '/profile/matches-history/$rewindId',
+    getParentRoute: () => authenticatedlayoutRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login': typeof loginLoginRoute
-  '/$matchId': typeof playMatchIdRoute
-  '/profile': typeof ProfileIndexRoute
-  '/profile/matches-history/list': typeof ProfileMatchesHistoryListRoute
-  '/match': typeof playMatchIndexRoute
-  '/profile/matches-history/rewind/$rewindId': typeof ProfileMatchesHistoryRewindRewindIdRoute
+  '/home': typeof authenticatedlayoutHomeRoute
+  '/match/$matchId': typeof authenticatedMatchMatchIdRoute
+  '/match/queue': typeof authenticatedMatchQueueRoute
+  '/login': typeof authenticatedlayoutloginLoginRoute
+  '/play': typeof authenticatedlayoutPlayIndexRoute
+  '/profile': typeof authenticatedlayoutProfileIndexRoute
+  '/profile/matches-history/$rewindId': typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
+  '/profile/manage-account': typeof authenticatedlayoutProfileManageAccountIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof loginLoginRoute
-  '/$matchId': typeof playMatchIdRoute
-  '/profile': typeof ProfileIndexRoute
-  '/profile/matches-history/list': typeof ProfileMatchesHistoryListRoute
-  '/match': typeof playMatchIndexRoute
-  '/profile/matches-history/rewind/$rewindId': typeof ProfileMatchesHistoryRewindRewindIdRoute
+  '/home': typeof authenticatedlayoutHomeRoute
+  '/match/$matchId': typeof authenticatedMatchMatchIdRoute
+  '/match/queue': typeof authenticatedMatchQueueRoute
+  '/login': typeof authenticatedlayoutloginLoginRoute
+  '/play': typeof authenticatedlayoutPlayIndexRoute
+  '/profile': typeof authenticatedlayoutProfileIndexRoute
+  '/profile/matches-history/$rewindId': typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
+  '/profile/manage-account': typeof authenticatedlayoutProfileManageAccountIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/(login)/login': typeof loginLoginRoute
-  '/(play)/$matchId': typeof playMatchIdRoute
-  '/profile/': typeof ProfileIndexRoute
-  '/profile/matches-history/list': typeof ProfileMatchesHistoryListRoute
-  '/(play)/match/': typeof playMatchIndexRoute
-  '/profile/matches-history/rewind/$rewindId': typeof ProfileMatchesHistoryRewindRewindIdRoute
+  '/(authenticated)/(layout)': typeof authenticatedlayoutRouteRouteWithChildren
+  '/(authenticated)/(layout)/home': typeof authenticatedlayoutHomeRoute
+  '/(authenticated)/match/$matchId': typeof authenticatedMatchMatchIdRoute
+  '/(authenticated)/match/queue': typeof authenticatedMatchQueueRoute
+  '/(authenticated)/(layout)/(login)/login': typeof authenticatedlayoutloginLoginRoute
+  '/(authenticated)/(layout)/play/': typeof authenticatedlayoutPlayIndexRoute
+  '/(authenticated)/(layout)/profile/': typeof authenticatedlayoutProfileIndexRoute
+  '/(authenticated)/(layout)/profile/matches-history/$rewindId': typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
+  '/(authenticated)/(layout)/profile/manage-account/': typeof authenticatedlayoutProfileManageAccountIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/home'
+    | '/match/$matchId'
+    | '/match/queue'
     | '/login'
-    | '/$matchId'
+    | '/play'
     | '/profile'
-    | '/profile/matches-history/list'
-    | '/match'
-    | '/profile/matches-history/rewind/$rewindId'
+    | '/profile/matches-history/$rewindId'
+    | '/profile/manage-account'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/home'
+    | '/match/$matchId'
+    | '/match/queue'
     | '/login'
-    | '/$matchId'
+    | '/play'
     | '/profile'
-    | '/profile/matches-history/list'
-    | '/match'
-    | '/profile/matches-history/rewind/$rewindId'
+    | '/profile/matches-history/$rewindId'
+    | '/profile/manage-account'
   id:
     | '__root__'
     | '/'
-    | '/(login)/login'
-    | '/(play)/$matchId'
-    | '/profile/'
-    | '/profile/matches-history/list'
-    | '/(play)/match/'
-    | '/profile/matches-history/rewind/$rewindId'
+    | '/(authenticated)/(layout)'
+    | '/(authenticated)/(layout)/home'
+    | '/(authenticated)/match/$matchId'
+    | '/(authenticated)/match/queue'
+    | '/(authenticated)/(layout)/(login)/login'
+    | '/(authenticated)/(layout)/play/'
+    | '/(authenticated)/(layout)/profile/'
+    | '/(authenticated)/(layout)/profile/matches-history/$rewindId'
+    | '/(authenticated)/(layout)/profile/manage-account/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  loginLoginRoute: typeof loginLoginRoute
-  playMatchIdRoute: typeof playMatchIdRoute
-  ProfileIndexRoute: typeof ProfileIndexRoute
-  ProfileMatchesHistoryListRoute: typeof ProfileMatchesHistoryListRoute
-  playMatchIndexRoute: typeof playMatchIndexRoute
-  ProfileMatchesHistoryRewindRewindIdRoute: typeof ProfileMatchesHistoryRewindRewindIdRoute
+  authenticatedlayoutRouteRoute: typeof authenticatedlayoutRouteRouteWithChildren
+  authenticatedMatchMatchIdRoute: typeof authenticatedMatchMatchIdRoute
+  authenticatedMatchQueueRoute: typeof authenticatedMatchQueueRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -132,60 +165,103 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile/': {
-      id: '/profile/'
+    '/(authenticated)/(layout)': {
+      id: '/(authenticated)/(layout)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authenticatedlayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(authenticated)/match/queue': {
+      id: '/(authenticated)/match/queue'
+      path: '/match/queue'
+      fullPath: '/match/queue'
+      preLoaderRoute: typeof authenticatedMatchQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(authenticated)/match/$matchId': {
+      id: '/(authenticated)/match/$matchId'
+      path: '/match/$matchId'
+      fullPath: '/match/$matchId'
+      preLoaderRoute: typeof authenticatedMatchMatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(authenticated)/(layout)/home': {
+      id: '/(authenticated)/(layout)/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof authenticatedlayoutHomeRouteImport
+      parentRoute: typeof authenticatedlayoutRouteRoute
+    }
+    '/(authenticated)/(layout)/profile/': {
+      id: '/(authenticated)/(layout)/profile/'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof ProfileIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof authenticatedlayoutProfileIndexRouteImport
+      parentRoute: typeof authenticatedlayoutRouteRoute
     }
-    '/(play)/$matchId': {
-      id: '/(play)/$matchId'
-      path: '/$matchId'
-      fullPath: '/$matchId'
-      preLoaderRoute: typeof playMatchIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/(authenticated)/(layout)/play/': {
+      id: '/(authenticated)/(layout)/play/'
+      path: '/play'
+      fullPath: '/play'
+      preLoaderRoute: typeof authenticatedlayoutPlayIndexRouteImport
+      parentRoute: typeof authenticatedlayoutRouteRoute
     }
-    '/(login)/login': {
-      id: '/(login)/login'
+    '/(authenticated)/(layout)/(login)/login': {
+      id: '/(authenticated)/(layout)/(login)/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof loginLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof authenticatedlayoutloginLoginRouteImport
+      parentRoute: typeof authenticatedlayoutRouteRoute
     }
-    '/(play)/match/': {
-      id: '/(play)/match/'
-      path: '/match'
-      fullPath: '/match'
-      preLoaderRoute: typeof playMatchIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/(authenticated)/(layout)/profile/manage-account/': {
+      id: '/(authenticated)/(layout)/profile/manage-account/'
+      path: '/profile/manage-account'
+      fullPath: '/profile/manage-account'
+      preLoaderRoute: typeof authenticatedlayoutProfileManageAccountIndexRouteImport
+      parentRoute: typeof authenticatedlayoutRouteRoute
     }
-    '/profile/matches-history/list': {
-      id: '/profile/matches-history/list'
-      path: '/profile/matches-history/list'
-      fullPath: '/profile/matches-history/list'
-      preLoaderRoute: typeof ProfileMatchesHistoryListRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile/matches-history/rewind/$rewindId': {
-      id: '/profile/matches-history/rewind/$rewindId'
-      path: '/profile/matches-history/rewind/$rewindId'
-      fullPath: '/profile/matches-history/rewind/$rewindId'
-      preLoaderRoute: typeof ProfileMatchesHistoryRewindRewindIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/(authenticated)/(layout)/profile/matches-history/$rewindId': {
+      id: '/(authenticated)/(layout)/profile/matches-history/$rewindId'
+      path: '/profile/matches-history/$rewindId'
+      fullPath: '/profile/matches-history/$rewindId'
+      preLoaderRoute: typeof authenticatedlayoutProfileMatchesHistoryRewindIdRouteImport
+      parentRoute: typeof authenticatedlayoutRouteRoute
     }
   }
 }
 
+interface authenticatedlayoutRouteRouteChildren {
+  authenticatedlayoutHomeRoute: typeof authenticatedlayoutHomeRoute
+  authenticatedlayoutloginLoginRoute: typeof authenticatedlayoutloginLoginRoute
+  authenticatedlayoutPlayIndexRoute: typeof authenticatedlayoutPlayIndexRoute
+  authenticatedlayoutProfileIndexRoute: typeof authenticatedlayoutProfileIndexRoute
+  authenticatedlayoutProfileMatchesHistoryRewindIdRoute: typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
+  authenticatedlayoutProfileManageAccountIndexRoute: typeof authenticatedlayoutProfileManageAccountIndexRoute
+}
+
+const authenticatedlayoutRouteRouteChildren: authenticatedlayoutRouteRouteChildren =
+  {
+    authenticatedlayoutHomeRoute: authenticatedlayoutHomeRoute,
+    authenticatedlayoutloginLoginRoute: authenticatedlayoutloginLoginRoute,
+    authenticatedlayoutPlayIndexRoute: authenticatedlayoutPlayIndexRoute,
+    authenticatedlayoutProfileIndexRoute: authenticatedlayoutProfileIndexRoute,
+    authenticatedlayoutProfileMatchesHistoryRewindIdRoute:
+      authenticatedlayoutProfileMatchesHistoryRewindIdRoute,
+    authenticatedlayoutProfileManageAccountIndexRoute:
+      authenticatedlayoutProfileManageAccountIndexRoute,
+  }
+
+const authenticatedlayoutRouteRouteWithChildren =
+  authenticatedlayoutRouteRoute._addFileChildren(
+    authenticatedlayoutRouteRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  loginLoginRoute: loginLoginRoute,
-  playMatchIdRoute: playMatchIdRoute,
-  ProfileIndexRoute: ProfileIndexRoute,
-  ProfileMatchesHistoryListRoute: ProfileMatchesHistoryListRoute,
-  playMatchIndexRoute: playMatchIndexRoute,
-  ProfileMatchesHistoryRewindRewindIdRoute:
-    ProfileMatchesHistoryRewindRewindIdRoute,
+  authenticatedlayoutRouteRoute: authenticatedlayoutRouteRouteWithChildren,
+  authenticatedMatchMatchIdRoute: authenticatedMatchMatchIdRoute,
+  authenticatedMatchQueueRoute: authenticatedMatchQueueRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

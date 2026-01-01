@@ -1,7 +1,8 @@
-import { PlayerTypes } from "../../../components/Gameboard";
-import { VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE } from "../../basicMovements";
+import { PlayerTypes } from "@/components/Gameboard/Gameboard";
 import { BoardCellData } from "../../board";
 import { ShowMove } from "../ShowMove";
+import { detectCheck } from "@/helpers/detectCheckAndCheckMate";
+import { MoveSetAction } from "../Pieces";
 
 const KNIGHT_MOVEMENTS_TUPPLE = [
     [-2, -1],
@@ -14,7 +15,7 @@ const KNIGHT_MOVEMENTS_TUPPLE = [
     [2, 1],
 ] as const
 
-export function KnightMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes) {
+export function KnightMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes, action: MoveSetAction) {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of KNIGHT_MOVEMENTS_TUPPLE) {
@@ -28,6 +29,9 @@ export function KnightMoveset(board: BoardCellData[][], currentPosition: BoardCe
             valids.push(cell);
         }
     }
-
-    ShowMove(valids, isValidPiece, playerRole)
+    if (action === 'show') {
+        ShowMove(valids, isValidPiece, playerRole)
+    } else {
+        detectCheck(valids)
+    }
 }

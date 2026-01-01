@@ -1,13 +1,14 @@
 import { JSX, SetStateAction } from "react";
-import { BoardCellData } from "../helpers/board";
-import { cn } from "../helpers/cn";
-import { HandleMovePiece } from "../helpers/pieces/ShowMove";
+import { BoardCellData } from "../../helpers/board";
+import { cn } from "../../helpers/cn";
+import { HandleMovePiece } from "../../helpers/pieces/ShowMove";
 import { PlayerTypes } from "./Gameboard";
 
 export enum CellActions {
     move = "move",
     attack = "attack",
-    unavailable = "unavailable"
+    unavailable = "unavailable",
+    check = "check"
 }
 
 
@@ -18,10 +19,10 @@ type Props = {
     update: React.Dispatch<SetStateAction<BoardCellData[][]>>,
     updateCapturedPieces: React.Dispatch<SetStateAction<BoardCellData['piece'][]>>
     playerRole: PlayerTypes
-
+    board: BoardCellData[][]
 } & JSX.IntrinsicElements['div']
 
-export default function PieceControl({ cellData, isSelected, update, updateCapturedPieces, playerRole, currentPiece, ...rest }: Props) {
+export default function PieceControl({ cellData, isSelected, update, updateCapturedPieces, playerRole, board, currentPiece, ...rest }: Props) {
     return (
         <div className="group flex w-full h-full  items-center justify-center"
             id={cellData.cell}
@@ -32,10 +33,11 @@ export default function PieceControl({ cellData, isSelected, update, updateCaptu
             <div
                 className={cn(`absolute rounded-full opacity-45 w-8 h-8 group-data-[possible=unavailable]:hidden`,
                     `group-data-[possible=move]:bg-blue-600`,
-                    `group-data-[possible=attack]:bg-red-600`
+                    `group-data-[possible=attack]:bg-red-600`,
+                    `group-data-[possible=check]:bg-orange-400`
                 )}
                 onClick={() => {
-                    HandleMovePiece(update, updateCapturedPieces, playerRole, cellData, currentPiece)
+                    HandleMovePiece(update, updateCapturedPieces, board, playerRole, cellData, currentPiece)
                 }}
             />
             <p className={cn("[&>svg]:size-8 transition-all duration-500  ease-in-out",

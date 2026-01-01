@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react"
-import { BoardCellData } from "../helpers/board"
-import { cn } from "../helpers/cn"
-import { useGameboardContext } from "../hooks/useGameboardContext"
+
 import PiecesCaptured from "./PiecesCaptured"
 import PieceControl from "./PieceControl"
+import { BoardCellData } from "@/helpers/board"
+import { useGameboardContext } from "@/hooks/useGameboardContext"
+import { cn } from "@/helpers/cn"
 
 export type PlayerTypes = 'white' | 'black'
 export type GameboarProps = {
@@ -25,13 +26,13 @@ export default function Gameboard({ playerRole }: GameboarProps) {
 
     function handleDisplayMove(current: BoardCellData) {
         if (current.cell == currentSelected?.cell || current.piece == null || current.piece.owner != playerRole) {
-            currentSelected?.piece?.moveset(board, currentSelected.cellMatrizIndex, false, playerRole)
+            currentSelected?.piece?.moveset(board, currentSelected.cellMatrizIndex, false, playerRole, 'show')
             setCurrentSelected(null)
             return
         }
         setCurrentSelected(current)
 
-        current.piece!.moveset(board, current.cellMatrizIndex, true, playerRole)
+        current.piece!.moveset(board, current.cellMatrizIndex, true, playerRole, 'show')
     }
 
 
@@ -57,7 +58,9 @@ export default function Gameboard({ playerRole }: GameboarProps) {
                                     update={updateBoard}
                                     updateCapturedPieces={updateCapturedPieces}
                                     playerRole={playerRole}
-                                    cellData={cell} />
+                                    cellData={cell}
+                                    board={board}
+                                />
                             </div>
 
                         ))}

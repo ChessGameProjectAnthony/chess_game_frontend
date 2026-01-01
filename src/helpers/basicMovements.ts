@@ -1,4 +1,4 @@
-import { PlayerTypes } from "../components/Gameboard";
+import { PlayerTypes } from "@/components/Gameboard/Gameboard";
 import { BoardCellData } from "./board"
 
 export const DIAGONAL_DIRECTIONS_TUPPLE = [

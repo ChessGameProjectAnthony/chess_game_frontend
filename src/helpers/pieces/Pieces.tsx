@@ -6,7 +6,7 @@ import { BishopMoveset } from "./Movesets/BishopMoveset"
 import { RookMoveset } from "./Movesets/RookMoveset"
 import { KingMoveset } from "./Movesets/KingMoveset"
 import { KnightMoveset } from "./Movesets/KnightMoveset"
-import { PlayerTypes } from "../../components/Gameboard"
+import { PlayerTypes } from "@/components/Gameboard/Gameboard";
 
 export type Pieces = {
     King: PieceData
@@ -16,11 +16,17 @@ export type Pieces = {
     Knight: PieceData
     Pawn: PieceData
 }
-
+export type MoveSetAction = 'show' | 'detectCheck'
 export type PieceData = {
-    moveset: (board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes) => void
+    moveset: (board: BoardCellData[][],
+        currentPosition: BoardCellData['cellMatrizIndex'],
+        isValidPiece: boolean,
+        playerRole: PlayerTypes,
+        action: MoveSetAction
+    ) => void
     owner: 'white' | 'black' | null
     icon: React.ReactNode
+
 }
 
 

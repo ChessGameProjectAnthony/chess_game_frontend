@@ -1,9 +1,11 @@
-import { PlayerTypes } from "../../../components/Gameboard";
+import { PlayerTypes } from "@/components/Gameboard/Gameboard";
 import { DIAGONAL_DIRECTIONS_TUPPLE, VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE } from "../../basicMovements";
 import { BoardCellData } from "../../board";
 import { ShowMove } from "../ShowMove";
+import { detectCheck } from "@/helpers/detectCheckAndCheckMate";
+import { MoveSetAction } from "../Pieces";
 
-export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes) {
+export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes, action: MoveSetAction) {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE) {
@@ -42,6 +44,9 @@ export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCell
             }
         }
     }
-
-    ShowMove(valids, isValidPiece, playerRole)
+    if (action === 'show') {
+        ShowMove(valids, isValidPiece, playerRole)
+    } else {
+        detectCheck(valids)
+    }
 }
