@@ -11,12 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as authenticatedlayoutRouteRouteImport } from './routes/(authenticated)/(layout)/route'
-import { Route as authenticatedMatchQueueRouteImport } from './routes/(authenticated)/match/queue'
 import { Route as authenticatedMatchMatchIdRouteImport } from './routes/(authenticated)/match/$matchId'
 import { Route as authenticatedlayoutHomeRouteImport } from './routes/(authenticated)/(layout)/home'
 import { Route as authenticatedlayoutProfileIndexRouteImport } from './routes/(authenticated)/(layout)/profile/index'
 import { Route as authenticatedlayoutPlayIndexRouteImport } from './routes/(authenticated)/(layout)/play/index'
 import { Route as authenticatedlayoutloginLoginRouteImport } from './routes/(authenticated)/(layout)/(login)/login'
+import { Route as authenticatedlayoutProfileMatchesHistoryIndexRouteImport } from './routes/(authenticated)/(layout)/profile/matches-history/index'
 import { Route as authenticatedlayoutProfileManageAccountIndexRouteImport } from './routes/(authenticated)/(layout)/profile/manage-account/index'
 import { Route as authenticatedlayoutProfileMatchesHistoryRewindIdRouteImport } from './routes/(authenticated)/(layout)/profile/matches-history/$rewindId'
 
@@ -30,11 +30,6 @@ const authenticatedlayoutRouteRoute =
     id: '/(authenticated)/(layout)',
     getParentRoute: () => rootRouteImport,
   } as any)
-const authenticatedMatchQueueRoute = authenticatedMatchQueueRouteImport.update({
-  id: '/(authenticated)/match/queue',
-  path: '/match/queue',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const authenticatedMatchMatchIdRoute =
   authenticatedMatchMatchIdRouteImport.update({
     id: '/(authenticated)/match/$matchId',
@@ -64,6 +59,12 @@ const authenticatedlayoutloginLoginRoute =
     path: '/login',
     getParentRoute: () => authenticatedlayoutRouteRoute,
   } as any)
+const authenticatedlayoutProfileMatchesHistoryIndexRoute =
+  authenticatedlayoutProfileMatchesHistoryIndexRouteImport.update({
+    id: '/profile/matches-history/',
+    path: '/profile/matches-history/',
+    getParentRoute: () => authenticatedlayoutRouteRoute,
+  } as any)
 const authenticatedlayoutProfileManageAccountIndexRoute =
   authenticatedlayoutProfileManageAccountIndexRouteImport.update({
     id: '/profile/manage-account/',
@@ -81,23 +82,23 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/home': typeof authenticatedlayoutHomeRoute
   '/match/$matchId': typeof authenticatedMatchMatchIdRoute
-  '/match/queue': typeof authenticatedMatchQueueRoute
   '/login': typeof authenticatedlayoutloginLoginRoute
   '/play': typeof authenticatedlayoutPlayIndexRoute
   '/profile': typeof authenticatedlayoutProfileIndexRoute
   '/profile/matches-history/$rewindId': typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
   '/profile/manage-account': typeof authenticatedlayoutProfileManageAccountIndexRoute
+  '/profile/matches-history': typeof authenticatedlayoutProfileMatchesHistoryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/home': typeof authenticatedlayoutHomeRoute
   '/match/$matchId': typeof authenticatedMatchMatchIdRoute
-  '/match/queue': typeof authenticatedMatchQueueRoute
   '/login': typeof authenticatedlayoutloginLoginRoute
   '/play': typeof authenticatedlayoutPlayIndexRoute
   '/profile': typeof authenticatedlayoutProfileIndexRoute
   '/profile/matches-history/$rewindId': typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
   '/profile/manage-account': typeof authenticatedlayoutProfileManageAccountIndexRoute
+  '/profile/matches-history': typeof authenticatedlayoutProfileMatchesHistoryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,12 +106,12 @@ export interface FileRoutesById {
   '/(authenticated)/(layout)': typeof authenticatedlayoutRouteRouteWithChildren
   '/(authenticated)/(layout)/home': typeof authenticatedlayoutHomeRoute
   '/(authenticated)/match/$matchId': typeof authenticatedMatchMatchIdRoute
-  '/(authenticated)/match/queue': typeof authenticatedMatchQueueRoute
   '/(authenticated)/(layout)/(login)/login': typeof authenticatedlayoutloginLoginRoute
   '/(authenticated)/(layout)/play/': typeof authenticatedlayoutPlayIndexRoute
   '/(authenticated)/(layout)/profile/': typeof authenticatedlayoutProfileIndexRoute
   '/(authenticated)/(layout)/profile/matches-history/$rewindId': typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
   '/(authenticated)/(layout)/profile/manage-account/': typeof authenticatedlayoutProfileManageAccountIndexRoute
+  '/(authenticated)/(layout)/profile/matches-history/': typeof authenticatedlayoutProfileMatchesHistoryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -118,42 +119,41 @@ export interface FileRouteTypes {
     | '/'
     | '/home'
     | '/match/$matchId'
-    | '/match/queue'
     | '/login'
     | '/play'
     | '/profile'
     | '/profile/matches-history/$rewindId'
     | '/profile/manage-account'
+    | '/profile/matches-history'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/home'
     | '/match/$matchId'
-    | '/match/queue'
     | '/login'
     | '/play'
     | '/profile'
     | '/profile/matches-history/$rewindId'
     | '/profile/manage-account'
+    | '/profile/matches-history'
   id:
     | '__root__'
     | '/'
     | '/(authenticated)/(layout)'
     | '/(authenticated)/(layout)/home'
     | '/(authenticated)/match/$matchId'
-    | '/(authenticated)/match/queue'
     | '/(authenticated)/(layout)/(login)/login'
     | '/(authenticated)/(layout)/play/'
     | '/(authenticated)/(layout)/profile/'
     | '/(authenticated)/(layout)/profile/matches-history/$rewindId'
     | '/(authenticated)/(layout)/profile/manage-account/'
+    | '/(authenticated)/(layout)/profile/matches-history/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   authenticatedlayoutRouteRoute: typeof authenticatedlayoutRouteRouteWithChildren
   authenticatedMatchMatchIdRoute: typeof authenticatedMatchMatchIdRoute
-  authenticatedMatchQueueRoute: typeof authenticatedMatchQueueRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -170,13 +170,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof authenticatedlayoutRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(authenticated)/match/queue': {
-      id: '/(authenticated)/match/queue'
-      path: '/match/queue'
-      fullPath: '/match/queue'
-      preLoaderRoute: typeof authenticatedMatchQueueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(authenticated)/match/$matchId': {
@@ -214,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedlayoutloginLoginRouteImport
       parentRoute: typeof authenticatedlayoutRouteRoute
     }
+    '/(authenticated)/(layout)/profile/matches-history/': {
+      id: '/(authenticated)/(layout)/profile/matches-history/'
+      path: '/profile/matches-history'
+      fullPath: '/profile/matches-history'
+      preLoaderRoute: typeof authenticatedlayoutProfileMatchesHistoryIndexRouteImport
+      parentRoute: typeof authenticatedlayoutRouteRoute
+    }
     '/(authenticated)/(layout)/profile/manage-account/': {
       id: '/(authenticated)/(layout)/profile/manage-account/'
       path: '/profile/manage-account'
@@ -238,6 +238,7 @@ interface authenticatedlayoutRouteRouteChildren {
   authenticatedlayoutProfileIndexRoute: typeof authenticatedlayoutProfileIndexRoute
   authenticatedlayoutProfileMatchesHistoryRewindIdRoute: typeof authenticatedlayoutProfileMatchesHistoryRewindIdRoute
   authenticatedlayoutProfileManageAccountIndexRoute: typeof authenticatedlayoutProfileManageAccountIndexRoute
+  authenticatedlayoutProfileMatchesHistoryIndexRoute: typeof authenticatedlayoutProfileMatchesHistoryIndexRoute
 }
 
 const authenticatedlayoutRouteRouteChildren: authenticatedlayoutRouteRouteChildren =
@@ -250,6 +251,8 @@ const authenticatedlayoutRouteRouteChildren: authenticatedlayoutRouteRouteChildr
       authenticatedlayoutProfileMatchesHistoryRewindIdRoute,
     authenticatedlayoutProfileManageAccountIndexRoute:
       authenticatedlayoutProfileManageAccountIndexRoute,
+    authenticatedlayoutProfileMatchesHistoryIndexRoute:
+      authenticatedlayoutProfileMatchesHistoryIndexRoute,
   }
 
 const authenticatedlayoutRouteRouteWithChildren =
@@ -261,7 +264,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authenticatedlayoutRouteRoute: authenticatedlayoutRouteRouteWithChildren,
   authenticatedMatchMatchIdRoute: authenticatedMatchMatchIdRoute,
-  authenticatedMatchQueueRoute: authenticatedMatchQueueRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

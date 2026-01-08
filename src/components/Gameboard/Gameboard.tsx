@@ -48,7 +48,7 @@ export default function Gameboard({ playerRole }: GameboarProps) {
                             <div
                                 key={cell.cell}
                                 className={cn(`w-24 h-24 relative flex`,
-                                    shouldBeWhite(columnIndex, cellIndex) ? "bg-gray-400" : "bg-gray-900"
+                                    shouldBeWhite(columnIndex, cellIndex) ? "bg-white" : "bg-black"
                                 )} >
 
                                 <PieceControl
