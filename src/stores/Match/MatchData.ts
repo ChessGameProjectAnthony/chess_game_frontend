@@ -2,6 +2,7 @@ import { SearchGameTypes } from "@/Enums/Match/MatchTypes"
 import { PlayerType } from "@/Enums/Match/PlayerType"
 import { BoardCellData } from "@/helpers/board"
 import { Pieces } from "@/helpers/pieces/Pieces"
+import { BaseSocketMessage, QueueSocketMessage } from "./MatchSocketEventsRegister"
 
 export type MoveData =
     {
@@ -44,10 +45,13 @@ export type CapturedPieces = {
 
 export type SocketState = {
     socket: WebSocket | null
-    message: string
-    connect: (isQueue: boolean, matchId?: number) => void
+    messages: QueueSocketMessage[]
+    onMessage: (msg: object) => void
+    connect: (isQueue: boolean, matchId?: number) => SocketState
     sendMessage: (msg: object) => void
     disconnect: () => void
+    joinMatch: (matchData: QueueSocketMessage) => void
+
 }
 
 export type GameboardContextProps = {
@@ -57,7 +61,6 @@ export type GameboardContextProps = {
     CapturedPieces: CapturedPieces
     fetchOponnetData: () => void
     updateCapturedPieces: () => void
-
     mountPlayerBoard: (playerType: keyof typeof PlayerType) => void
     board: BoardCellData[][] | null
 };

@@ -1,45 +1,66 @@
 import { Button } from '@/components/ui/button';
 import { SearchGameTypes } from '@/Enums/Match/MatchTypes';
 import useGameSocket from '@/stores/Match/MatchSocketStore';
-import { createFileRoute, useSearch } from '@tanstack/react-router'
+import { createFileRoute, redirect, useRouter, useSearch } from '@tanstack/react-router'
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react'
 
 export const Route = createFileRoute('/(authenticated)/match/queue')({
     component: RouteComponent,
     beforeLoad: async (ctx) => {
-        await useGameSocket.getState().socketState?.connect(true);
+        await useGameSocket.getState()?.socketState?.connect(true)
+
     },
+
 })
 
 function RouteComponent() {
-    const spanRef = useRef<HTMLSpanElement>(null);
-    const { socketState } = useGameSocket();
+    const { socketState, } = useGameSocket();
+    const { navigate } = useRouter()
 
+    useEffect(() => {
+        console.log("top")
+        if (socketState?.socket?.OPEN === 1) {
+            console.log("top")
 
-    setInterval(async () => {
-        setTimeout(() => {
-            handleAnimation()
-        }, 200)
-    }, 200);
-
-    async function handleAnimation() {
-        if (spanRef.current!.innerText.length == 4) {
-            spanRef.current!.innerText = ""
-            return
-        }
-        const newText = Array(spanRef!.current!.innerText.length + 1).fill(".").toString().replaceAll(",", '')
-        spanRef!.current!.innerText = newText
-    }
-
-    return <div className='flex items-center justify-center'>
-        <Button onClick={() => {
             socketState?.sendMessage({
                 MatchType: SearchGameTypes['Any']
             })
+        }
+    }, [socketState?.socket?.readyState])
+
+    useEffect(() => {
+        const match = socketState?.messages[0]
+        if (match) {
+            navigate({ to: '/match/$matchId', params: { matchId: match.Data.GameQueueId.toString() } })
+
+        }
+
+    }, [socketState?.messages[0]?.Event])
+
+    return <div className='flex items-center justify-center'>
+        <Button onClick={() => {
+
         }}>
             fodase
         </Button>
-        <h1 className='text-52 relative'>ta caçando fi <span ref={spanRef} className='absolute right-[-13]'>{spanRef.current?.innerText}</span></h1>
+        <Button onClick={() => {
+            console.log(socketState?.socket?.readyState)
+        }}>
+            fodase
+        </Button>
+
+        <ul className='flex flex-col'>
+            {socketState?.messages?.map(m => (
+                <div className='flex flex-col'>
+
+                    {Object.keys(m).map(z => (
+                        <div>
+                            {z}
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </ul>
     </div>
 }
