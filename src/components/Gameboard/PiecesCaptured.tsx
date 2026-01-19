@@ -1,25 +1,24 @@
+import useGameSocket from "@/stores/Match/MatchSocketStore";
 import { cn } from "../../helpers/cn";
-import { useGameboardContext } from "../../hooks/useGameboardContext";
+import { PlayerType } from "@/Enums/Match/PlayerType";
 
 type Props = {
-  isWhite?: boolean;
+  playerCapture?: keyof typeof PlayerType;
 };
 
-export default function PiecesCaptured({ isWhite }: Props) {
-  const { CapturedPieces } = useGameboardContext();
-
+export default function PiecesCaptured({ playerCapture }: Props) {
+  const { CapturedPieces } = useGameSocket();
+  const isWhite = playerCapture == "White"
   return (
     <div className="w-full border-b border-white">
       <p>{isWhite ? "Peças pretas capturadas" : "Peças brancas capturadas"}</p>
       <div className="w-full h-8 flex justify-start gap-2">
-        {CapturedPieces.filter((p) =>
-          isWhite ? p?.owner == "black" : p?.owner == "white"
-        ).map((p) => (
+        {CapturedPieces[playerCapture as keyof typeof CapturedPieces]?.map((p) => (
           <div className="">
             <p
               className={cn(
                 "transition-all duration-500  ease-in-out",
-                !isWhite ? "text-white" : "text-black"
+                !isWhite ? "text-blue-500" : "text-purple-700"
               )}
             >
               {p?.icon}

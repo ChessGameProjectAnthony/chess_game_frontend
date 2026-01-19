@@ -1,4 +1,3 @@
-import { ChessBoard } from "@/components/gameBVo";
 import { Button } from "@/components/ui/button";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { ArrowLeft, Flag, MessageCircle, RotateCcw } from "lucide-react";
@@ -58,7 +57,6 @@ function RouteComponent() {
         className="flex justify-center px-4 animate-fade-in"
         style={{ animationDelay: "0.2s" }}
       >
-        <ChessBoard matchId="XYZ789" playerName="You vs Magnus" />
       </div>
 
       {/* Player Info */}

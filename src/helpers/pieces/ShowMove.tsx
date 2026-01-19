@@ -1,11 +1,11 @@
 import { SetStateAction } from "react";
 import { BoardCellData } from "../board";
 import { CellActions } from "../../components/Gameboard/PieceControl";
-import { PlayerTypes } from "@/components/Gameboard/Gameboard";
+import { PlayerType } from "@/Enums/Match/PlayerType";
 
 let prev: BoardCellData[] | null;
 
-export function ShowMove(cells: BoardCellData[], isToActivate: boolean, playerRole: PlayerTypes) {
+export function ShowMove(cells: BoardCellData[], isToActivate: boolean, playerRole: keyof typeof PlayerType) {
     cells = cells.filter(Boolean)
     prev?.forEach(cell => {
         document.getElementById(cell.cell)?.setAttribute("data-possible", CellActions['unavailable'])
@@ -31,14 +31,14 @@ export function HandleMovePiece(
     update: React.Dispatch<SetStateAction<BoardCellData[][]>>,
     updateCapturedPieces: React.Dispatch<SetStateAction<BoardCellData['piece'][]>>,
     currentBoard: BoardCellData[][],
-    playerRole: PlayerTypes,
+    playerRole: keyof typeof PlayerType,
     DesiredPos: BoardCellData,
     currentPiece?: BoardCellData | null,
 ) {
     if (currentPiece == null) return
 
     let newCapture: BoardCellData['piece'] = null
-    if (DesiredPos.piece?.moveset.name == "KingMoveset") return
+    if (DesiredPos.piece?.moveset.name == "KingMoveset") return 
     update(prev => (
         prev.map(row =>
             row.map(cell => {

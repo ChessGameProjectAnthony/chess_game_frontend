@@ -13,7 +13,7 @@ import { BishopMoveset } from "./Movesets/BishopMoveset";
 import { RookMoveset } from "./Movesets/RookMoveset";
 import { KingMoveset } from "./Movesets/KingMoveset";
 import { KnightMoveset } from "./Movesets/KnightMoveset";
-import { PlayerTypes } from "@/components/Gameboard/Gameboard";
+import { PlayerType } from "@/Enums/Match/PlayerType";
 
 export type Pieces = {
   King: PieceData;
@@ -29,10 +29,10 @@ export type PieceData = {
     board: BoardCellData[][],
     currentPosition: BoardCellData["cellMatrizIndex"],
     isValidPiece: boolean,
-    playerRole: PlayerTypes,
+    playerRole: keyof typeof PlayerType,
     action: MoveSetAction
   ) => void;
-  owner: "white" | "black" | null;
+  owner: keyof typeof PlayerType | null
   icon: React.ReactNode;
 };
 

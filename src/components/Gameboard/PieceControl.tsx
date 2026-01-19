@@ -2,7 +2,7 @@ import { JSX, SetStateAction } from "react";
 import { BoardCellData } from "../../helpers/board";
 import { cn } from "../../helpers/cn";
 import { HandleMovePiece } from "../../helpers/pieces/ShowMove";
-import { PlayerTypes } from "./Gameboard";
+import { PlayerType } from "@/Enums/Match/PlayerType";
 
 export enum CellActions {
   move = "move",
@@ -19,7 +19,7 @@ type Props = {
   updateCapturedPieces: React.Dispatch<
     SetStateAction<BoardCellData["piece"][]>
   >;
-  playerRole: PlayerTypes;
+  playerRole: keyof typeof PlayerType;
   board: BoardCellData[][];
 } & JSX.IntrinsicElements["div"];
 
@@ -65,9 +65,9 @@ export default function PieceControl({
         className={cn(
           "text-[3.5rem] font-extrabold transition-all duration-500  ease-in-out select-none",
           cellData.piece?.owner == playerRole &&
-            "group-hover:[&>svg]:size-12 cursor-pointer",
+          "group-hover:[&>svg]:size-12 cursor-pointer",
           isSelected && "[&>svg]:size-12",
-          cellData?.piece?.owner == "white" ? "text-white" : "text-black"
+          cellData?.piece?.owner == "White" ? "text-blue-500" : "text-purple-700"
         )}
       >
         {cellData?.piece?.icon}

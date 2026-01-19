@@ -6,15 +6,21 @@ import {
   Award,
   Target,
   ChevronRight,
-  ArrowLeft,
   X,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import useAuth from "@/stores/AuthStore";
+import axios from "axios";
+import { Profile } from "@/Types/ProfileData";
 
 export const Route = createFileRoute("/(authenticated)/(layout)/profile/")({
   component: RouteComponent,
+  loader: async ({ params }) => {
+
+  },
+  preload: true
 });
 interface GameHistory {
   id: number;
@@ -92,7 +98,24 @@ const gameHistory: GameHistory[] = [
 
 function RouteComponent() {
   const [selectedGame, setSelectedGame] = useState<GameHistory | null>(null);
+  const { username, token, setProfileData, profileData } = useAuth()
+  async function GetUserData() {
 
+    const response = await axios.get("http://localhost:5050/account/account-details", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    console.log(response.data as Profile)
+    if (response) {
+      setProfileData(response.data)
+    }
+  }
+
+  useEffect(() => {
+    if (profileData) return
+    GetUserData()
+  }, [])
   return (
     <div className="min-h-screen bg-background pb-24 lg:pb-8">
       <div className="container mx-auto max-w-4xl">
@@ -101,15 +124,15 @@ function RouteComponent() {
           <div className="flex items-center gap-4 lg:gap-6">
             <div className="flex h-20 w-20 lg:h-24 lg:w-24 items-center justify-center rounded-full bg-primary card-shadow">
               <span className="text-3xl lg:text-4xl text-nav-foreground">
-                ♚
+                {profileData?.profilePicBase64}
               </span>
             </div>
             <div className="flex-1">
               <h1 className="text-2xl lg:text-3xl font-bold text-foreground">
-                Username
+                {username}
               </h1>
               <p className="text-sm lg:text-base text-muted-foreground">
-                Rating: 1,542
+                Rating: {profileData?.statistics.rating}
               </p>
             </div>
             <button className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-lg bg-card text-sm font-medium text-foreground hover:bg-muted transition-colors card-shadow">
@@ -130,10 +153,10 @@ function RouteComponent() {
             style={{ animationDelay: "0.1s" }}
           >
             {[
-              { icon: Award, value: "24", label: "Wins" },
-              { icon: Target, value: "18", label: "Losses" },
-              { icon: TrendingUp, value: "57%", label: "Win Rate" },
-              { icon: History, value: "42", label: "Games" },
+              { icon: Award, value: profileData?.statistics.wins, label: "Wins" },
+              { icon: Target, value: profileData?.statistics.losses, label: "Losses" },
+              { icon: TrendingUp, value: profileData?.statistics.winRate, label: "Win Rate" },
+              { icon: History, value: profileData?.statistics.games, label: "Games" },
             ].map(({ icon: Icon, value, label }) => (
               <div
                 key={label}
@@ -179,7 +202,7 @@ function RouteComponent() {
                     Rating Progress
                   </h3>
                   <div className="flex items-end gap-1 h-24 lg:h-32">
-                    {[45, 52, 48, 61, 55, 70, 65, 78, 72, 85].map(
+                    {profileData?.statistics?.ratingProgress?.progress.map(
                       (height, i) => (
                         <div
                           key={i}
@@ -199,7 +222,7 @@ function RouteComponent() {
                   </div>
                   <div className="flex justify-between mt-2 text-xs text-muted-foreground">
                     <span>10 games ago</span>
-                    <span>Now</span>
+                    <span>{profileData?.statistics.ratingProgress.lastGameDate}</span>
                   </div>
                 </div>
 
@@ -269,24 +292,22 @@ function RouteComponent() {
                   <div className="flex items-center gap-3">
                     <div className="text-right">
                       <p
-                        className={`font-semibold ${
-                          game.result === "Win"
-                            ? "text-green-500"
-                            : game.result === "Loss"
-                              ? "text-red-500"
-                              : "text-muted-foreground"
-                        }`}
+                        className={`font-semibold ${game.result === "Win"
+                          ? "text-green-500"
+                          : game.result === "Loss"
+                            ? "text-red-500"
+                            : "text-muted-foreground"
+                          }`}
                       >
                         {game.result}
                       </p>
                       <p
-                        className={`text-xs ${
-                          game.rating.startsWith("+")
-                            ? "text-green-500"
-                            : game.rating.startsWith("-")
-                              ? "text-red-500"
-                              : "text-muted-foreground"
-                        }`}
+                        className={`text-xs ${game.rating.startsWith("+")
+                          ? "text-green-500"
+                          : game.rating.startsWith("-")
+                            ? "text-red-500"
+                            : "text-muted-foreground"
+                          }`}
                       >
                         {game.rating}
                       </p>
@@ -331,13 +352,12 @@ function RouteComponent() {
               </div>
               <div className="ml-auto">
                 <span
-                  className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                    selectedGame.result === "Win"
-                      ? "bg-green-500/10 text-green-500"
-                      : selectedGame.result === "Loss"
-                        ? "bg-red-500/10 text-red-500"
-                        : "bg-muted text-muted-foreground"
-                  }`}
+                  className={`px-3 py-1 rounded-full text-sm font-semibold ${selectedGame.result === "Win"
+                    ? "bg-green-500/10 text-green-500"
+                    : selectedGame.result === "Loss"
+                      ? "bg-red-500/10 text-red-500"
+                      : "bg-muted text-muted-foreground"
+                    }`}
                 >
                   {selectedGame.result}
                 </span>
@@ -350,13 +370,12 @@ function RouteComponent() {
                   Rating Change
                 </p>
                 <p
-                  className={`text-xl font-bold ${
-                    selectedGame.rating.startsWith("+")
-                      ? "text-green-500"
-                      : selectedGame.rating.startsWith("-")
-                        ? "text-red-500"
-                        : "text-foreground"
-                  }`}
+                  className={`text-xl font-bold ${selectedGame.rating.startsWith("+")
+                    ? "text-green-500"
+                    : selectedGame.rating.startsWith("-")
+                      ? "text-red-500"
+                      : "text-foreground"
+                    }`}
                 >
                   {selectedGame.rating}
                 </p>

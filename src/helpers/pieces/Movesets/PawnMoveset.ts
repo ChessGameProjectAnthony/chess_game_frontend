@@ -1,11 +1,11 @@
-import { PlayerTypes } from "@/components/Gameboard/Gameboard";
 import { BoardCellData } from "../../board";
 import { ShowMove } from "../ShowMove";
 import { detectCheck } from "@/helpers/detectCheckAndCheckMate";
 import { MoveSetAction } from "../Pieces";
+import { PlayerType } from "@/Enums/Match/PlayerType";
 
 
-export function PawnMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes, action: MoveSetAction) {
+export function PawnMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: keyof typeof PlayerType, action: MoveSetAction) {
     const valids: BoardCellData[] = []
     if (currentPosition[0] == 6) {
         if (board[currentPosition[0] - 1][currentPosition[1]].piece) return

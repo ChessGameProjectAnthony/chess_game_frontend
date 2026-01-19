@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  chess_game_frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/chess_game_frontend
+      - /chess_game_frontend/node_modules
+    networks:
+      - Infrastructure-network

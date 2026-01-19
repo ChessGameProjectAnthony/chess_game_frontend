@@ -1,8 +1,12 @@
 import Navigator from "@/components/Navigator";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import useAuth from "@/stores/AuthStore";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(authenticated)/(layout)")({
   component: RouteComponent,
+  beforeLoad: () => {
+    if (!useAuth.getState().isUserLogged()) throw redirect({ to: "/" })
+  }
 });
 
 function RouteComponent() {

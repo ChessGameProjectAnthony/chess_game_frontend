@@ -1,4 +1,5 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import useAuth from "@/stores/AuthStore";
+import { createRootRoute, Outlet, redirect } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 const RootLayout = () => (
   <>
@@ -9,7 +10,4 @@ const RootLayout = () => (
 
 export const Route = createRootRoute({
   component: RootLayout,
-  beforeLoad: () => {
-    console.log("toaoofafka");
-  },
 });

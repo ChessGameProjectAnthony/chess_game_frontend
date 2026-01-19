@@ -41,18 +41,18 @@ function RouteComponent() {
 
             {/* Quick Actions - Desktop */}
             <div className="hidden lg:flex gap-4">
-              <Link to="/match/queue">
+              <Link to="/match/$matchId" params={{
+                matchId: "1"
+              }}>
                 <Button variant="game" size="lg" className="gap-3">
                   <Play className="h-5 w-5" />
                   Find a Game
                 </Button>
               </Link>
-              <Link to="/match/queue">
-                <Button variant="outline" size="lg" className="gap-3">
-                  <Users className="h-5 w-5" />
-                  Invite Friend
-                </Button>
-              </Link>
+              <Button variant="outline" size="lg" className="gap-3">
+                <Users className="h-5 w-5" />
+                Invite Friend
+              </Button>
             </div>
           </div>
 
@@ -97,7 +97,9 @@ function RouteComponent() {
           className="flex lg:hidden gap-3 mb-8 animate-fade-in"
           style={{ animationDelay: "0.15s" }}
         >
-          <Link to="/match/queue" className="flex-1">
+          <Link to="/match/$matchId" params={{
+            matchId: "1"
+          }} className="flex-1">
             <Button variant="game" className="w-full gap-2">
               <Play className="h-4 w-4" />
               Play Now
@@ -184,24 +186,22 @@ function RouteComponent() {
                 </div>
                 <div className="text-right">
                   <p
-                    className={`font-semibold ${
-                      game.result === "Win"
-                        ? "text-green-500"
-                        : game.result === "Loss"
-                          ? "text-red-500"
-                          : "text-muted-foreground"
-                    }`}
+                    className={`font-semibold ${game.result === "Win"
+                      ? "text-green-500"
+                      : game.result === "Loss"
+                        ? "text-red-500"
+                        : "text-muted-foreground"
+                      }`}
                   >
                     {game.result}
                   </p>
                   <p
-                    className={`text-xs ${
-                      game.rating.startsWith("+")
-                        ? "text-green-500"
-                        : game.rating.startsWith("-")
-                          ? "text-red-500"
-                          : "text-muted-foreground"
-                    }`}
+                    className={`text-xs ${game.rating.startsWith("+")
+                      ? "text-green-500"
+                      : game.rating.startsWith("-")
+                        ? "text-red-500"
+                        : "text-muted-foreground"
+                      }`}
                   >
                     {game.rating}
                   </p>

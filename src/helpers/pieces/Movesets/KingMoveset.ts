@@ -1,11 +1,11 @@
-import { PlayerTypes } from "@/components/Gameboard/Gameboard";
 import { DIAGONAL_DIRECTIONS_TUPPLE, VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE } from "../../basicMovements";
 import { BoardCellData } from "../../board";
 import { ShowMove } from "../ShowMove";
 import { detectCheck } from "@/helpers/detectCheckAndCheckMate";
 import { MoveSetAction } from "../Pieces";
+import { PlayerType } from "@/Enums/Match/PlayerType";
 
-export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerTypes, action: MoveSetAction) {
+export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: keyof typeof PlayerType, action: MoveSetAction) {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE) {

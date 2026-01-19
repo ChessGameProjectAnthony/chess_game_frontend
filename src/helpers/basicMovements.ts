@@ -1,4 +1,4 @@
-import { PlayerTypes } from "@/components/Gameboard/Gameboard";
+import { PlayerType } from "@/Enums/Match/PlayerType";
 import { BoardCellData } from "./board"
 
 export const DIAGONAL_DIRECTIONS_TUPPLE = [
@@ -15,7 +15,7 @@ export const VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE = [
     [0, 1],
 ] as const
 
-export function verticalAndHorizontalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: PlayerTypes): BoardCellData[] {
+export function verticalAndHorizontalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: keyof typeof PlayerType): BoardCellData[] {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE) {
@@ -42,7 +42,7 @@ export function verticalAndHorizontalMovement(board: BoardCellData[][], currentP
     return valids;
 }
 
-export function diagonalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: PlayerTypes): BoardCellData[] {
+export function diagonalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: keyof typeof PlayerType): BoardCellData[] {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of DIAGONAL_DIRECTIONS_TUPPLE) {

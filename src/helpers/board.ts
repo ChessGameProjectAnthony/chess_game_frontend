@@ -20,8 +20,8 @@ export function mountBoard(playerRole: boolean): BoardCellData[][] {
 }
 
 export function fillBoardToStartMatch(board: BoardCellData[][], isWhite: boolean): BoardCellData[][] {
-    const oponentRole = isWhite ? 'black' : 'white'
-    const playerRole = isWhite ? 'white' : 'black'
+    const oponentRole = isWhite ? 'Black' : 'White'
+    const playerRole = isWhite ? 'White' : 'Black'
     board[1].map(cell => cell.piece = {
         icon: Pawn.icon,
         moveset: Pawn.moveset,

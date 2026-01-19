@@ -75,11 +75,10 @@ function RouteComponent() {
                   <button
                     key={id}
                     onClick={() => setSelectedTime(id)}
-                    className={`flex flex-col items-center gap-2 rounded-xl p-4 lg:p-6 transition-all duration-200 ${
-                      selectedTime === id
-                        ? "bg-primary text-primary-foreground scale-105 card-shadow"
-                        : "bg-card text-foreground hover:bg-muted card-shadow"
-                    }`}
+                    className={`flex flex-col items-center gap-2 rounded-xl p-4 lg:p-6 transition-all duration-200 ${selectedTime === id
+                      ? "bg-primary text-primary-foreground scale-105 card-shadow"
+                      : "bg-card text-foreground hover:bg-muted card-shadow"
+                      }`}
                   >
                     <Icon className="h-5 w-5 lg:h-6 lg:w-6" />
                     <span className="font-semibold">{label}</span>
@@ -140,9 +139,9 @@ function RouteComponent() {
               </h2>
               <Button variant={"game"} className="w-full" size="lg">
                 <Link
-                  to="/match/$matchId"
+                  to="/match/queue"
                   params={{
-                    matchId: "lfaklfkakfa",
+                    matchId: "1",
                   }}
                 >
                   <Search className="h-5 w-5" />

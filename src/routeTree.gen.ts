@@ -9,8 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as loginIndexRouteImport } from './routes/(login)/index'
 import { Route as authenticatedlayoutRouteRouteImport } from './routes/(authenticated)/(layout)/route'
+import { Route as authenticatedMatchQueueRouteImport } from './routes/(authenticated)/match/queue'
 import { Route as authenticatedMatchMatchIdRouteImport } from './routes/(authenticated)/match/$matchId'
 import { Route as authenticatedlayoutHomeRouteImport } from './routes/(authenticated)/(layout)/home'
 import { Route as authenticatedlayoutProfileIndexRouteImport } from './routes/(authenticated)/(layout)/profile/index'
@@ -20,8 +21,8 @@ import { Route as authenticatedlayoutProfileMatchesHistoryIndexRouteImport } fro
 import { Route as authenticatedlayoutProfileManageAccountIndexRouteImport } from './routes/(authenticated)/(layout)/profile/manage-account/index'
 import { Route as authenticatedlayoutProfileMatchesHistoryRewindIdRouteImport } from './routes/(authenticated)/(layout)/profile/matches-history/$rewindId'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const loginIndexRoute = loginIndexRouteImport.update({
+  id: '/(login)/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -30,6 +31,11 @@ const authenticatedlayoutRouteRoute =
     id: '/(authenticated)/(layout)',
     getParentRoute: () => rootRouteImport,
   } as any)
+const authenticatedMatchQueueRoute = authenticatedMatchQueueRouteImport.update({
+  id: '/(authenticated)/match/queue',
+  path: '/match/queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authenticatedMatchMatchIdRoute =
   authenticatedMatchMatchIdRouteImport.update({
     id: '/(authenticated)/match/$matchId',
@@ -79,9 +85,10 @@ const authenticatedlayoutProfileMatchesHistoryRewindIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof loginIndexRoute
   '/home': typeof authenticatedlayoutHomeRoute
   '/match/$matchId': typeof authenticatedMatchMatchIdRoute
+  '/match/queue': typeof authenticatedMatchQueueRoute
   '/login': typeof authenticatedlayoutloginLoginRoute
   '/play': typeof authenticatedlayoutPlayIndexRoute
   '/profile': typeof authenticatedlayoutProfileIndexRoute
@@ -90,9 +97,10 @@ export interface FileRoutesByFullPath {
   '/profile/matches-history': typeof authenticatedlayoutProfileMatchesHistoryIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof loginIndexRoute
   '/home': typeof authenticatedlayoutHomeRoute
   '/match/$matchId': typeof authenticatedMatchMatchIdRoute
+  '/match/queue': typeof authenticatedMatchQueueRoute
   '/login': typeof authenticatedlayoutloginLoginRoute
   '/play': typeof authenticatedlayoutPlayIndexRoute
   '/profile': typeof authenticatedlayoutProfileIndexRoute
@@ -102,10 +110,11 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/(authenticated)/(layout)': typeof authenticatedlayoutRouteRouteWithChildren
+  '/(login)/': typeof loginIndexRoute
   '/(authenticated)/(layout)/home': typeof authenticatedlayoutHomeRoute
   '/(authenticated)/match/$matchId': typeof authenticatedMatchMatchIdRoute
+  '/(authenticated)/match/queue': typeof authenticatedMatchQueueRoute
   '/(authenticated)/(layout)/(login)/login': typeof authenticatedlayoutloginLoginRoute
   '/(authenticated)/(layout)/play/': typeof authenticatedlayoutPlayIndexRoute
   '/(authenticated)/(layout)/profile/': typeof authenticatedlayoutProfileIndexRoute
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/'
     | '/home'
     | '/match/$matchId'
+    | '/match/queue'
     | '/login'
     | '/play'
     | '/profile'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/'
     | '/home'
     | '/match/$matchId'
+    | '/match/queue'
     | '/login'
     | '/play'
     | '/profile'
@@ -138,10 +149,11 @@ export interface FileRouteTypes {
     | '/profile/matches-history'
   id:
     | '__root__'
-    | '/'
     | '/(authenticated)/(layout)'
+    | '/(login)/'
     | '/(authenticated)/(layout)/home'
     | '/(authenticated)/match/$matchId'
+    | '/(authenticated)/match/queue'
     | '/(authenticated)/(layout)/(login)/login'
     | '/(authenticated)/(layout)/play/'
     | '/(authenticated)/(layout)/profile/'
@@ -151,18 +163,19 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   authenticatedlayoutRouteRoute: typeof authenticatedlayoutRouteRouteWithChildren
+  loginIndexRoute: typeof loginIndexRoute
   authenticatedMatchMatchIdRoute: typeof authenticatedMatchMatchIdRoute
+  authenticatedMatchQueueRoute: typeof authenticatedMatchQueueRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/(login)/': {
+      id: '/(login)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof loginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(authenticated)/(layout)': {
@@ -170,6 +183,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof authenticatedlayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(authenticated)/match/queue': {
+      id: '/(authenticated)/match/queue'
+      path: '/match/queue'
+      fullPath: '/match/queue'
+      preLoaderRoute: typeof authenticatedMatchQueueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(authenticated)/match/$matchId': {
@@ -261,9 +281,10 @@ const authenticatedlayoutRouteRouteWithChildren =
   )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   authenticatedlayoutRouteRoute: authenticatedlayoutRouteRouteWithChildren,
+  loginIndexRoute: loginIndexRoute,
   authenticatedMatchMatchIdRoute: authenticatedMatchMatchIdRoute,
+  authenticatedMatchQueueRoute: authenticatedMatchQueueRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
