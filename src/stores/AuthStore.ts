@@ -14,7 +14,9 @@ type AuthProps = UserAuthData & {
 const useAuth = create<AuthProps>((set) => ({
     username: null,
     token: null,
-    profileData: null,
+    profileData: {
+        id: Math.floor(Math.random() * 100)
+    } as Profile,
     setProfileData: (payload: Profile) => {
         set({ profileData: payload })
     },

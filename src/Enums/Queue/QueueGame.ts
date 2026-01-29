@@ -4,7 +4,7 @@ export type GameQueueData = {
     createdByPlayerId: number
     joinedPlayerId: number
     PlayerRank: number
-    GameQueueId: number
+    GameId: string
     GameType: keyof typeof SearchGameTypes
     createAt: Date
 }

@@ -15,7 +15,7 @@ export const VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE = [
     [0, 1],
 ] as const
 
-export function verticalAndHorizontalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: keyof typeof PlayerType): BoardCellData[] {
+export function verticalAndHorizontalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: PlayerType): BoardCellData[] {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE) {
@@ -42,7 +42,7 @@ export function verticalAndHorizontalMovement(board: BoardCellData[][], currentP
     return valids;
 }
 
-export function diagonalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: keyof typeof PlayerType): BoardCellData[] {
+export function diagonalMovement(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], playerRole: PlayerType): BoardCellData[] {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of DIAGONAL_DIRECTIONS_TUPPLE) {

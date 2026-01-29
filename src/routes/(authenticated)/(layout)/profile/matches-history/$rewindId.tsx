@@ -32,25 +32,7 @@ function RouteComponent() {
       </div>
 
       {/* Opponent Info */}
-      <div
-        className="mx-auto max-w-md px-6 animate-fade-in"
-        style={{ animationDelay: "0.1s" }}
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-nav-foreground">
-            ♚
-          </div>
-          <div>
-            <p className="font-semibold text-foreground">Magnus</p>
-            <p className="text-xs text-muted-foreground">Rating: 2,847</p>
-          </div>
-          <div className="ml-auto rounded-lg bg-card px-3 py-1 card-shadow">
-            <span className="font-mono text-lg font-bold text-foreground">
-              4:32
-            </span>
-          </div>
-        </div>
-      </div>
+
 
       {/* Chess Board */}
       <div

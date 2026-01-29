@@ -1,4 +1,6 @@
+import { PlayerType } from "@/Enums/Match/PlayerType"
 import { Bishop, King, Knight, Pawn, Pieces, Queen, Rook } from "./pieces/Pieces"
+import useGameSocket from "@/stores/Match/MatchSocketStore"
 
 export type BoardCellData = {
     cell: string,
@@ -6,12 +8,15 @@ export type BoardCellData = {
     piece?: Pieces[keyof Pieces] | null
 }
 
-export function mountBoard(playerRole: boolean): BoardCellData[][] {
-    const alphabetRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-    const numberColumns = ['8', '7', '6', '5', '4', '3', '2', '1']
-
-    return Array.from(playerRole ? numberColumns : numberColumns.reverse(), (letter, rowIndex) =>
-        Array.from((playerRole ? alphabetRows : alphabetRows.reverse()).map((num, columnIndex) => ({
+export function mountBoard(playerRole: PlayerType): BoardCellData[][] {
+    let alphabetRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    let numberColumns = ['8', '7', '6', '5', '4', '3', '2', '1']
+    if (playerRole == PlayerType.Black) {
+        alphabetRows = alphabetRows.reverse()
+        numberColumns = numberColumns.reverse()
+    }
+    return Array.from(numberColumns, (letter, rowIndex) =>
+        Array.from(alphabetRows.map((num, columnIndex) => ({
             cell: `${letter}${num}`,
             cellMatrizIndex: [rowIndex, columnIndex],
             piece: null
@@ -19,9 +24,9 @@ export function mountBoard(playerRole: boolean): BoardCellData[][] {
     )
 }
 
-export function fillBoardToStartMatch(board: BoardCellData[][], isWhite: boolean): BoardCellData[][] {
-    const oponentRole = isWhite ? 'Black' : 'White'
-    const playerRole = isWhite ? 'White' : 'Black'
+export function fillBoardToStartMatch(board: BoardCellData[][]): BoardCellData[][] {
+    const oponentRole = useGameSocket.getState().gameData.OponnetIs
+    const playerRole = useGameSocket.getState().gameData.PlayerIs
     board[1].map(cell => cell.piece = {
         icon: Pawn.icon,
         moveset: Pawn.moveset,

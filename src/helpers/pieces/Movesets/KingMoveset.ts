@@ -5,7 +5,7 @@ import { detectCheck } from "@/helpers/detectCheckAndCheckMate";
 import { MoveSetAction } from "../Pieces";
 import { PlayerType } from "@/Enums/Match/PlayerType";
 
-export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: keyof typeof PlayerType, action: MoveSetAction) {
+export function KingMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerType, action: MoveSetAction) {
     const valids: BoardCellData[] = []
 
     for (const [direction_row, direction_column] of VERTICAL_AND_HORIZONTAL_DIRECTIONS_TUPPLE) {

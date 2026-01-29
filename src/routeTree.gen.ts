@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as loginIndexRouteImport } from './routes/(login)/index'
+import { Route as authenticatedMatchRouteRouteImport } from './routes/(authenticated)/match/route'
 import { Route as authenticatedlayoutRouteRouteImport } from './routes/(authenticated)/(layout)/route'
 import { Route as authenticatedMatchQueueRouteImport } from './routes/(authenticated)/match/queue'
 import { Route as authenticatedMatchMatchIdRouteImport } from './routes/(authenticated)/match/$matchId'
@@ -26,21 +27,26 @@ const loginIndexRoute = loginIndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authenticatedMatchRouteRoute = authenticatedMatchRouteRouteImport.update({
+  id: '/(authenticated)/match',
+  path: '/match',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authenticatedlayoutRouteRoute =
   authenticatedlayoutRouteRouteImport.update({
     id: '/(authenticated)/(layout)',
     getParentRoute: () => rootRouteImport,
   } as any)
 const authenticatedMatchQueueRoute = authenticatedMatchQueueRouteImport.update({
-  id: '/(authenticated)/match/queue',
-  path: '/match/queue',
-  getParentRoute: () => rootRouteImport,
+  id: '/queue',
+  path: '/queue',
+  getParentRoute: () => authenticatedMatchRouteRoute,
 } as any)
 const authenticatedMatchMatchIdRoute =
   authenticatedMatchMatchIdRouteImport.update({
-    id: '/(authenticated)/match/$matchId',
-    path: '/match/$matchId',
-    getParentRoute: () => rootRouteImport,
+    id: '/$matchId',
+    path: '/$matchId',
+    getParentRoute: () => authenticatedMatchRouteRoute,
   } as any)
 const authenticatedlayoutHomeRoute = authenticatedlayoutHomeRouteImport.update({
   id: '/home',
@@ -85,6 +91,7 @@ const authenticatedlayoutProfileMatchesHistoryRewindIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/match': typeof authenticatedMatchRouteRouteWithChildren
   '/': typeof loginIndexRoute
   '/home': typeof authenticatedlayoutHomeRoute
   '/match/$matchId': typeof authenticatedMatchMatchIdRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/profile/matches-history': typeof authenticatedlayoutProfileMatchesHistoryIndexRoute
 }
 export interface FileRoutesByTo {
+  '/match': typeof authenticatedMatchRouteRouteWithChildren
   '/': typeof loginIndexRoute
   '/home': typeof authenticatedlayoutHomeRoute
   '/match/$matchId': typeof authenticatedMatchMatchIdRoute
@@ -111,6 +119,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(authenticated)/(layout)': typeof authenticatedlayoutRouteRouteWithChildren
+  '/(authenticated)/match': typeof authenticatedMatchRouteRouteWithChildren
   '/(login)/': typeof loginIndexRoute
   '/(authenticated)/(layout)/home': typeof authenticatedlayoutHomeRoute
   '/(authenticated)/match/$matchId': typeof authenticatedMatchMatchIdRoute
@@ -125,6 +134,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/match'
     | '/'
     | '/home'
     | '/match/$matchId'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/profile/matches-history'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/match'
     | '/'
     | '/home'
     | '/match/$matchId'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(authenticated)/(layout)'
+    | '/(authenticated)/match'
     | '/(login)/'
     | '/(authenticated)/(layout)/home'
     | '/(authenticated)/match/$matchId'
@@ -164,9 +176,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   authenticatedlayoutRouteRoute: typeof authenticatedlayoutRouteRouteWithChildren
+  authenticatedMatchRouteRoute: typeof authenticatedMatchRouteRouteWithChildren
   loginIndexRoute: typeof loginIndexRoute
-  authenticatedMatchMatchIdRoute: typeof authenticatedMatchMatchIdRoute
-  authenticatedMatchQueueRoute: typeof authenticatedMatchQueueRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -178,6 +189,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof loginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(authenticated)/match': {
+      id: '/(authenticated)/match'
+      path: '/match'
+      fullPath: '/match'
+      preLoaderRoute: typeof authenticatedMatchRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(authenticated)/(layout)': {
       id: '/(authenticated)/(layout)'
       path: ''
@@ -187,17 +205,17 @@ declare module '@tanstack/react-router' {
     }
     '/(authenticated)/match/queue': {
       id: '/(authenticated)/match/queue'
-      path: '/match/queue'
+      path: '/queue'
       fullPath: '/match/queue'
       preLoaderRoute: typeof authenticatedMatchQueueRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authenticatedMatchRouteRoute
     }
     '/(authenticated)/match/$matchId': {
       id: '/(authenticated)/match/$matchId'
-      path: '/match/$matchId'
+      path: '/$matchId'
       fullPath: '/match/$matchId'
       preLoaderRoute: typeof authenticatedMatchMatchIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authenticatedMatchRouteRoute
     }
     '/(authenticated)/(layout)/home': {
       id: '/(authenticated)/(layout)/home'
@@ -280,11 +298,26 @@ const authenticatedlayoutRouteRouteWithChildren =
     authenticatedlayoutRouteRouteChildren,
   )
 
+interface authenticatedMatchRouteRouteChildren {
+  authenticatedMatchMatchIdRoute: typeof authenticatedMatchMatchIdRoute
+  authenticatedMatchQueueRoute: typeof authenticatedMatchQueueRoute
+}
+
+const authenticatedMatchRouteRouteChildren: authenticatedMatchRouteRouteChildren =
+  {
+    authenticatedMatchMatchIdRoute: authenticatedMatchMatchIdRoute,
+    authenticatedMatchQueueRoute: authenticatedMatchQueueRoute,
+  }
+
+const authenticatedMatchRouteRouteWithChildren =
+  authenticatedMatchRouteRoute._addFileChildren(
+    authenticatedMatchRouteRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   authenticatedlayoutRouteRoute: authenticatedlayoutRouteRouteWithChildren,
+  authenticatedMatchRouteRoute: authenticatedMatchRouteRouteWithChildren,
   loginIndexRoute: loginIndexRoute,
-  authenticatedMatchMatchIdRoute: authenticatedMatchMatchIdRoute,
-  authenticatedMatchQueueRoute: authenticatedMatchQueueRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

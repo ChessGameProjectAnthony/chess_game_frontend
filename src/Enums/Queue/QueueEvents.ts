@@ -1,6 +1,7 @@
 export enum SearchMatchResponses {
-    Found,
-    CreatedAndWaiting,
-    PlayerJoined
+    MatchCreated = "MatchCreated",
+    Found = "Found",
+    PlayerJoined = "PlayerJoined",
+    SearchMatch = "SearchMatch",
 }
 

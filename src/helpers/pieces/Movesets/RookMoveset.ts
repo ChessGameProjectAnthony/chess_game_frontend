@@ -5,7 +5,7 @@ import { MoveSetAction } from "../Pieces";
 import { detectCheck } from "@/helpers/detectCheckAndCheckMate";
 import { PlayerType } from "@/Enums/Match/PlayerType";
 
-export function RookMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: keyof typeof PlayerType, action: MoveSetAction) {
+export function RookMoveset(board: BoardCellData[][], currentPosition: BoardCellData['cellMatrizIndex'], isValidPiece: boolean, playerRole: PlayerType, action: MoveSetAction) {
     const valids = verticalAndHorizontalMovement(board, currentPosition, playerRole)
     if (action === 'show') {
         ShowMove(valids, isValidPiece, playerRole)

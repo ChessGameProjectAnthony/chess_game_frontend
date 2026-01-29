@@ -3,6 +3,7 @@ export type Profile = {
     email: string
     profilePicBase64: string
     statistics: Statistics
+    id: number
 }
 
 export type Statistics = {
