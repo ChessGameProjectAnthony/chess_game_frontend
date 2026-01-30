@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { CapturedPieces, GameboardContextProps, GameData, GameEventsType, MoveData, OponnentData, SocketState } from "./MatchData"
+import { CapturedPieces, GameboardContextProps, GameData, GameEventsType, MatchEndedReason, MoveData, OponnentData, SocketState } from "./MatchData"
 import { BoardCellData, fillBoardToStartMatch, mountBoard } from "@/helpers/board"
 import { MatchSocketEventsRegister, QueueSocketMessage } from "./MatchSocketEventsRegister"
 import axios from "axios"
@@ -10,6 +10,7 @@ import { MatchEvents } from "@/Enums/Match/MatchEvents"
 import { PlayerType } from "@/Enums/Match/PlayerType"
 import useAuth from "../AuthStore"
 import { Navigate } from "@tanstack/react-router"
+
 const useGameSocket = create<GameboardContextProps>((set, get) => ({
     update: () => set,
     board: null,
@@ -25,11 +26,13 @@ const useGameSocket = create<GameboardContextProps>((set, get) => ({
             }
         )
     },
+
     CapturedPieces: {} as CapturedPieces,
     updateCapturedPieces: (value: BoardCellData['piece']) => {
         set(state => (
             {
                 CapturedPieces: {
+                    ...state.CapturedPieces,
                     [value!.owner!]: [...state.CapturedPieces[value?.owner!] ?? [], value]
                 }
             }
@@ -66,11 +69,16 @@ const useGameSocket = create<GameboardContextProps>((set, get) => ({
         })
     },
     socketState: {
+        isMatchEnded: false,
+        matchEndendMessage: null,
+        matchEnded: (message: MatchEndedReason) => {
+            set(state => ({ socketState: { ...state.socketState, matchEndendMessage: message, isMatchEnded: true } } as GameboardContextProps))
+        },
+        drawProposed: false,
         isMatchFound: false,
         socket: null,
         connect: () => {
             if (get().socketState?.socket?.readyState === WebSocket.OPEN) return
-            // const path = isQueue ? `ws://localhost:5050/ws/match/queue` : `ws://localhost:5050/ws/match`
             const socket = new WebSocket(`ws://localhost:5050/ws/play`)
             console.log(socket)
             set(state => ({

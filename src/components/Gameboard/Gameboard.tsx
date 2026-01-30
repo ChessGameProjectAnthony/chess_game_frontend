@@ -27,7 +27,7 @@ export default function Gameboard() {
     }
 
     function handleDisplayMove(current: BoardCellData) {
-        if (current.cell == currentSelected?.cell || current.piece == null || current.piece.owner != gameData.PlayerIs) {
+        if (current.cell == currentSelected?.cell || current.piece == null || current.piece.owner != gameData.PlayerIs || !gameData.isPlayerTurn) {
             MoveSetRegistry[currentSelected?.piece?.moveset!](board!, current.cellMatrizIndex, false, gameData.PlayerIs, 'show')
 
             setCurrentSelected(null)
@@ -39,52 +39,29 @@ export default function Gameboard() {
     }
 
     return (
-        <div className="grid grid-cols-[.5fr_1.2fr_.5fr] h-screen">
-            <div className="">
-
-            </div>
-            <div className="flex flex-col w-full justify-center gap-2 ">
-                {/* <PiecesCaptured playerCapture={PlayerType.White} /> */}
-                <PlayerInfo />
-                <div className="flex flex-col justify-center items-center" id="board-container">
-                    {board?.map((column, columnIndex) => (
+        <div className="flex flex-col justify-center items-center" id="board-container">
+            {board?.map((column, columnIndex) => (
+                <div
+                    key={columnIndex}
+                    className="flex">
+                    {column.map((cell, cellIndex) => (
                         <div
-                            key={columnIndex}
-                            className="flex">
-                            {column.map((cell, cellIndex) => (
-                                <div
-                                    key={cell.cell}
-                                    className={cn(`w-22 h-22 relative flex`,
-                                        shouldBeWhite(columnIndex, cellIndex) ? "bg-white" : "bg-gray-600"
-                                    )} >
+                            key={cell.cell}
+                            className={cn(`w-22 h-22 relative flex`,
+                                shouldBeWhite(columnIndex, cellIndex) ? "bg-white" : "bg-gray-600"
+                            )} >
 
-                                    <PieceControl
-                                        onClick={() => handleDisplayMove(cell)}
-                                        isSelected={cell.cell == currentSelected?.cell && cell.piece?.owner == gameData.PlayerIs}
-                                        currentPiece={currentSelected}
-                                        cellData={cell}
-                                        board={board!}
-                                    />
-                                </div>
-
-                            ))}
+                            <PieceControl
+                                onClick={() => handleDisplayMove(cell)}
+                                isSelected={cell.cell == currentSelected?.cell && cell.piece?.owner == gameData.PlayerIs}
+                                currentPiece={currentSelected}
+                                cellData={cell}
+                                board={board!}
+                            />
                         </div>
                     ))}
-                </div >
-                <PlayerInfo isPlayer />
-                <div className="flex gap-4 justify-center items-center">
-                    <Button>
-                        Draw
-                    </Button>
-                    <Button>
-                        Give up
-                    </Button>
                 </div>
-            </div>
-            <Chat />
-        </div>
+            ))}
+        </div >
     )
-
-
-
 }

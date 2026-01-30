@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { SearchGameTypes } from '@/Enums/Match/MatchTypes';
 import { SearchMatchResponses } from '@/Enums/Queue/QueueEvents';
+import useAuth from '@/stores/AuthStore';
 import useGameSocket from '@/stores/Match/MatchSocketStore';
 import { createFileRoute, redirect, useRouter, useRouterState, useSearch } from '@tanstack/react-router'
 import axios from 'axios';
@@ -17,6 +18,7 @@ function RouteComponent() {
             Event: SearchMatchResponses.SearchMatch,
             Data: {
                 GameType: SearchGameTypes.Any,
+                PlayerId: useAuth.getState().profileData?.id,
                 PlayerRank: 10,
             }
         });
@@ -29,14 +31,6 @@ function RouteComponent() {
         socket.addEventListener('open', fetchMatch)
         return () => socket.removeEventListener('open', fetchMatch);
     }, [socketState?.socket]);
-
-
-    // useEffect(() => {
-    //     if (socketState?.isMatchFound) {
-    //         navigate({ to: '/match/$matchId', params: { matchId: gameData.MatchId } })
-
-    //     }
-    // }, [socketState?.isMatchFound])
 
     return <div className='flex items-center justify-center'>
         Procurando partida procê

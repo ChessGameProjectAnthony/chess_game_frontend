@@ -4,21 +4,21 @@ import { PlayerType } from "@/Enums/Match/PlayerType";
 import { Bishop, Pawn } from "@/helpers/pieces/Pieces";
 
 type Props = {
-  capituredFrom: PlayerType;
+  capturedFrom: PlayerType;
 };
 
-export default function PiecesCaptured({ capituredFrom }: Props) {
+export default function PiecesCaptured({ capturedFrom }: Props) {
   const { CapturedPieces } = useGameSocket();
-  const isWhite = capituredFrom === PlayerType.White
+  const isWhite = capturedFrom === PlayerType.White
   return (
     <div className="w-fit h-full flex justify-center  items-center">
       <div className="w-fit flex justify-start gap-1 items-center ">
-        {(CapturedPieces[capituredFrom as keyof typeof CapturedPieces])?.map((p) => (
+        {(CapturedPieces[capturedFrom])?.map((p) => (
           <div className="">
             <p
               className={cn(
                 "transition-all duration-500  ease-in-out font-bold text-[1.8rem]",
-                isWhite ? "text-gray-500" : "text-black"
+                isWhite ? "text-gray-400" : "text-black"
               )}
             >
               {p?.icon}

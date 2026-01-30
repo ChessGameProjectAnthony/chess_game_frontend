@@ -4,9 +4,10 @@ import { SearchMatchResponses } from "@/Enums/Queue/QueueEvents"
 import { GameQueueData } from "@/Enums/Queue/QueueGame"
 import { MatchEvents } from "@/Enums/Match/MatchEvents"
 import { JoinEvent, MoveEvent, MoveEventData } from "@/Enums/Match/MoveEvent"
-import { GameData } from "./MatchData"
+import { GameboardContextProps, GameData } from "./MatchData"
 import { PlayerType } from "@/Enums/Match/PlayerType"
 import useAuth from "../AuthStore"
+import { MatchPlayerEvents } from "@/Enums/Match/MatchPlayerEvents"
 
 export type BaseSocketMessage<Event, Data> = {
     Event: Event
@@ -33,16 +34,58 @@ function findHandler(msg: MessageEvent) {
     if (Object.values(MatchEvents).includes(eventName)) {
         handleMatchResponse(msg)
     }
+    if (Object.values(MatchPlayerEvents).includes(eventName)) {
+        handleMatchPlayerEventsResponse(msg)
+    }
     if (Object.values(SearchMatchResponses).includes(eventName)) {
         handleQueueResponse(msg)
         return
     }
 }
+function handleMatchPlayerEventsResponse(msg: MessageEvent) {
+    const parsed = JSON.parse(msg.data)
+    const ctx = useGameSocket.getState();
+    if (parsed.Event == MatchPlayerEvents.OfferDraw && parsed.Data.PlayerType !== ctx.gameData.PlayerIs) {
+        useGameSocket.setState(state => ({ socketState: { ...state.socketState, drawProposed: true } } as GameboardContextProps))
+        return
+    }
+    if (parsed.Event == MatchPlayerEvents.DrawDenied) {
+
+        return
+    }
+    const playerWon = parsed.Data.PlayerId !== useAuth.getState().profileData?.id
+    let message;
+
+    switch (parsed.Event) {
+        case MatchPlayerEvents.GiveUp:
+            message = "Player gave up"
+            break
+        case MatchPlayerEvents.DrawAccepted:
+            message = "Draw"
+            break
+        case MatchPlayerEvents.OponnetExited:
+            message = "Player quited"
+            break
+        default:
+            message = "Match ended"
+            break
+    }
+
+    ctx.socketState?.matchEnded({
+        message: message,
+        playerWon
+    })
+
+}
+
 function handleMatchResponse(msg: MessageEvent) {
     const parsed = JSON.parse(msg.data)
     const ctx = useGameSocket.getState();
 
     if (parsed.Event == MatchEvents.MoveMade) {
+
+        useGameSocket.setState(state => ({ gameData: { ...state.gameData, isPlayerTurn: parsed.Data.OwnerType !== ctx.gameData.PlayerIs } }))
+
         ctx.handleReceivePieceMovement(
             {
                 DestinationCell: parsed.Data.DestinationCell,
@@ -60,9 +103,11 @@ function handleMatchResponse(msg: MessageEvent) {
             BlackPlayerId: parsed.Data.BlackPlayerId,
             WhitePlayerId: parsed.Data.WhitePlayerId,
             OponnetIs: useAuth.getState()!.profileData!.id === parsed.Data.BlackPlayerId ? PlayerType.White : PlayerType.Black,
-            PlayerIs: useAuth.getState()!.profileData!.id == parsed.Data.WhitePlayerId ? PlayerType.White : PlayerType.Black,
 
+            PlayerIs: useAuth.getState()!.profileData!.id == parsed.Data.WhitePlayerId ? PlayerType.White : PlayerType.Black,
         })
+
+        if (ctx.gameData.PlayerIs == PlayerType.White) useGameSocket.setState(state => ({ gameData: { ...state.gameData, isPlayerTurn: true } }))
     }
 }
 

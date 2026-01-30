@@ -23,11 +23,11 @@ export function PlayerInfo({ isPlayer }: Props) {
                     <p className="text-xs text-muted-foreground">Rating: 2,847</p>
                 </div>
                 <div className="rounded-lg bg-card px-3 py-1 card-shadow">
-                    <span className="font-mono text-lg font-bold text-foreground">
+                    {/* <span className="font-mono text-lg font-bold text-foreground">
                         4:32
-                    </span>
+                    </span> */}
                 </div>
-                <PiecesCaptured capituredFrom={isPlayer ? gameData.OponnetIs : gameData.PlayerIs} />
+                <PiecesCaptured capturedFrom={isPlayer ? gameData.OponnetIs : gameData.PlayerIs} />
             </div>
         </div>
 

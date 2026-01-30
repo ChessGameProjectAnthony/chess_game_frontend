@@ -28,7 +28,7 @@ export type OponnentData = {
 
 export type GameData =
     {
-
+        isPlayerTurn: boolean
         OponnetIs: PlayerType
         PlayerIs: PlayerType
         BlackPlayer: PlayerType
@@ -49,7 +49,11 @@ export type SearchMatchDto =
 export type CapturedPieces = {
     [key: number]: BoardCellData['piece'][]
 }
+export type MatchEndedReason = {
+    message: string
+    playerWon: boolean
 
+}
 export type SocketState = {
     socket: WebSocket | null
     messages: object[]
@@ -59,6 +63,10 @@ export type SocketState = {
     disconnect: () => void
     joinMatch: () => void
     isMatchFound: boolean
+    isMatchEnded: boolean
+    matchEnded: (msg: MatchEndedReason) => void,
+    matchEndendMessage: MatchEndedReason | null
+    drawProposed: boolean
 }
 
 export type GameboardContextProps = {
@@ -74,4 +82,5 @@ export type GameboardContextProps = {
     handleReceivePieceMovement: (move: Pick<MoveEventData, 'DestinationCell' | 'Piece' | 'OwnerType'>) => void
     updateBoard: (value: BoardCellData[][]) => void
     setGameData: (data: Partial<GameData>) => void
+
 };
