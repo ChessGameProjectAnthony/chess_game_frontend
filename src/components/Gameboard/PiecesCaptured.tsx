@@ -1,24 +1,24 @@
 import useGameSocket from "@/stores/Match/MatchSocketStore";
 import { cn } from "../../helpers/cn";
 import { PlayerType } from "@/Enums/Match/PlayerType";
+import { Bishop, Pawn } from "@/helpers/pieces/Pieces";
 
 type Props = {
-  playerCapture?: keyof typeof PlayerType;
+  capturedFrom: PlayerType;
 };
 
-export default function PiecesCaptured({ playerCapture }: Props) {
+export default function PiecesCaptured({ capturedFrom }: Props) {
   const { CapturedPieces } = useGameSocket();
-  const isWhite = playerCapture == "White"
+  const isWhite = capturedFrom === PlayerType.White
   return (
-    <div className="w-full border-b border-white">
-      <p>{isWhite ? "Peças pretas capturadas" : "Peças brancas capturadas"}</p>
-      <div className="w-full h-8 flex justify-start gap-2">
-        {CapturedPieces[playerCapture as keyof typeof CapturedPieces]?.map((p) => (
+    <div className="w-fit h-full flex justify-center  items-center">
+      <div className="w-fit flex justify-start gap-1 items-center ">
+        {(CapturedPieces[capturedFrom])?.map((p) => (
           <div className="">
             <p
               className={cn(
-                "transition-all duration-500  ease-in-out",
-                !isWhite ? "text-blue-500" : "text-purple-700"
+                "transition-all duration-500  ease-in-out font-bold text-[1.8rem]",
+                isWhite ? "text-gray-400" : "text-black"
               )}
             >
               {p?.icon}

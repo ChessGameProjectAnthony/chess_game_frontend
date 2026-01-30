@@ -30,19 +30,7 @@ const timeControls = [
 ];
 
 function RouteComponent() {
-  const [foundMatch, setFoundMatch] = useState(false);
-  // const { navigate } = useRouter();
-  // setTimeout(() => {
-  //   setFoundMatch(true);
-  // }, 2000);
-  // setTimeout(() => {
-  //   navigate({
-  //     to: `/match/$matchId`,
-  //     params: {
-  //       matchId: "Fodase kfakfka",
-  //     },
-  //   });
-  // }, 3000);
+
 
   const [selectedTime, setSelectedTime] = useState("blitz");
 
@@ -137,13 +125,8 @@ function RouteComponent() {
               <h2 className="hidden lg:block mb-4 text-sm font-medium text-muted-foreground uppercase tracking-wide">
                 Start Playing
               </h2>
-              <Button variant={"game"} className="w-full" size="lg">
-                <Link
-                  to="/match/queue"
-                  params={{
-                    matchId: "1",
-                  }}
-                >
+              <Button variant={"game"} className="w-full" size="lg" asChild>
+                <Link to="/match/queue">
                   <Search className="h-5 w-5" />
                   Procurar partida
                 </Link>
@@ -219,6 +202,6 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

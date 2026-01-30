@@ -1,45 +1,39 @@
 import { Button } from '@/components/ui/button';
 import { SearchGameTypes } from '@/Enums/Match/MatchTypes';
+import { SearchMatchResponses } from '@/Enums/Queue/QueueEvents';
+import useAuth from '@/stores/AuthStore';
 import useGameSocket from '@/stores/Match/MatchSocketStore';
-import { createFileRoute, useSearch } from '@tanstack/react-router'
+import { createFileRoute, redirect, useRouter, useRouterState, useSearch } from '@tanstack/react-router'
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react'
 
 export const Route = createFileRoute('/(authenticated)/match/queue')({
     component: RouteComponent,
-    beforeLoad: async (ctx) => {
-        await useGameSocket.getState().socketState?.connect(true);
-    },
 })
 
 function RouteComponent() {
-    const spanRef = useRef<HTMLSpanElement>(null);
-    const { socketState } = useGameSocket();
-
-
-    setInterval(async () => {
-        setTimeout(() => {
-            handleAnimation()
-        }, 200)
-    }, 200);
-
-    async function handleAnimation() {
-        if (spanRef.current!.innerText.length == 4) {
-            spanRef.current!.innerText = ""
-            return
-        }
-        const newText = Array(spanRef!.current!.innerText.length + 1).fill(".").toString().replaceAll(",", '')
-        spanRef!.current!.innerText = newText
+    const { socketState, gameData } = useGameSocket()
+    function fetchMatch() {
+        socketState!.sendMessage({
+            Event: SearchMatchResponses.SearchMatch,
+            Data: {
+                GameType: SearchGameTypes.Any,
+                PlayerId: useAuth.getState().profileData?.id,
+                PlayerRank: 10,
+            }
+        });
     }
+    useEffect(() => {
+        const socket = socketState?.socket;
+        if (!socket) return;
+
+
+        socket.addEventListener('open', fetchMatch)
+        return () => socket.removeEventListener('open', fetchMatch);
+    }, [socketState?.socket]);
 
     return <div className='flex items-center justify-center'>
-        <Button onClick={() => {
-            socketState?.sendMessage({
-                MatchType: SearchGameTypes['Any']
-            })
-        }}>
-            fodase
-        </Button>
-        <h1 className='text-52 relative'>ta caçando fi <span ref={spanRef} className='absolute right-[-13]'>{spanRef.current?.innerText}</span></h1>
+        Procurando partida procê
+        <button onClick={fetchMatch}>Test</button>
     </div>
 }

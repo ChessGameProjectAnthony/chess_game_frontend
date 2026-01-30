@@ -25,44 +25,54 @@ export type Pieces = {
 };
 export type MoveSetAction = "show" | "detectCheck";
 export type PieceData = {
-  moveset: (
-    board: BoardCellData[][],
-    currentPosition: BoardCellData["cellMatrizIndex"],
-    isValidPiece: boolean,
-    playerRole: keyof typeof PlayerType,
-    action: MoveSetAction
-  ) => void;
-  owner: keyof typeof PlayerType | null
+  moveset: keyof typeof MoveSetRegistry
+  owner: PlayerType | null
   icon: React.ReactNode;
 };
 
 export const King: Pieces["King"] = {
   icon: "♔",
   owner: null,
-  moveset: KingMoveset,
+  moveset: 'KingMoveset',
 };
 export const Queen: Pieces["Queen"] = {
   icon: "♕",
   owner: null,
-  moveset: QueenMoveset,
+  moveset: 'QueenMoveset',
 };
 export const Rook: Pieces["Rook"] = {
   icon: "♖",
   owner: null,
-  moveset: RookMoveset,
+  moveset: 'RookMoveset',
 };
 export const Bishop: Pieces["Bishop"] = {
   icon: "♗",
   owner: null,
-  moveset: BishopMoveset,
+  moveset: 'BishopMoveset',
 };
 export const Knight: Pieces["Knight"] = {
   icon: "♘",
   owner: null,
-  moveset: KnightMoveset,
+  moveset: 'KnightMoveset',
 };
 export const Pawn: Pieces["Pawn"] = {
   icon: "♙",
   owner: null,
-  moveset: PawnMoveset,
+  moveset: "PawnMoveset",
 };
+
+export const MoveSetRegistry: {
+  [key: string]: (
+    board: BoardCellData[][],
+    currentPosition: BoardCellData['cellMatrizIndex'],
+    isValidPiece: boolean,
+    playerRole: PlayerType,
+    action: MoveSetAction) => void
+} = {
+  "PawnMoveset": PawnMoveset,
+  "KnightMoveset": KnightMoveset,
+  "BishopMoveset": BishopMoveset,
+  "RookMoveset": RookMoveset,
+  "QueenMoveset": QueenMoveset,
+  "KingMoveset": KingMoveset
+} as const
