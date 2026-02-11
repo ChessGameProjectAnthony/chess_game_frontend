@@ -54,6 +54,12 @@ export type MatchEndedReason = {
     playerWon: boolean
 
 }
+export type ChatMessage = {
+    RoomId: string
+    PlayerId: number
+    Message: string
+}
+
 export type SocketState = {
     socket: WebSocket | null
     messages: object[]
@@ -67,11 +73,15 @@ export type SocketState = {
     matchEnded: (msg: MatchEndedReason) => void,
     matchEndendMessage: MatchEndedReason | null
     drawProposed: boolean
+
 }
 
 export type GameboardContextProps = {
     socketState: SocketState | null
     gameData: GameData
+    chatMessages: ChatMessage[]
+    handleSendChatMessage: (msg: ChatMessage) => void
+    handleReceiveChatMessage: (msg: ChatMessage) => void
     update: () => void
     CapturedPieces: CapturedPieces,
     fetchOponnetData: () => void
@@ -82,5 +92,6 @@ export type GameboardContextProps = {
     handleReceivePieceMovement: (move: Pick<MoveEventData, 'DestinationCell' | 'Piece' | 'OwnerType'>) => void
     updateBoard: (value: BoardCellData[][]) => void
     setGameData: (data: Partial<GameData>) => void
-
+    handleSendPromotePawnMessage: (piece: BoardCellData) => void
+    handleReceivePromotePawnMessage: (piece: BoardCellData) => void
 };

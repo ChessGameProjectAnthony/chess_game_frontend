@@ -1,15 +1,18 @@
 import { create } from "zustand"
-import { CapturedPieces, GameboardContextProps, GameData, GameEventsType, MatchEndedReason, MoveData, OponnentData, SocketState } from "./MatchData"
+import { CapturedPieces, ChatMessage, GameboardContextProps, GameData, GameEventsType, MatchEndedReason, MoveData, OponnentData, SocketState } from "./MatchData"
 import { BoardCellData, fillBoardToStartMatch, mountBoard } from "@/helpers/board"
 import { MatchSocketEventsRegister, QueueSocketMessage } from "./MatchSocketEventsRegister"
 import axios from "axios"
 import { MoveEventData } from "@/Enums/Match/MoveEvent"
-import { HandleMovePiece } from "@/helpers/pieces/ShowMove"
+import { clearMovesShowing, HandleMovePiece } from "@/helpers/pieces/ShowMove"
 import { Pieces } from "@/helpers/pieces/Pieces"
 import { MatchEvents } from "@/Enums/Match/MatchEvents"
 import { PlayerType } from "@/Enums/Match/PlayerType"
 import useAuth from "../AuthStore"
 import { Navigate } from "@tanstack/react-router"
+import { handleDisplayPromotePawnOptions } from "@/helpers/pieces/tranformPawn"
+import { transformPawnKey } from "@/helpers/keyMaker"
+import { ChatEvents } from "@/Enums/Chat/ChatEvents"
 
 const useGameSocket = create<GameboardContextProps>((set, get) => ({
     update: () => set,
@@ -51,7 +54,6 @@ const useGameSocket = create<GameboardContextProps>((set, get) => ({
         )
     },
     handleSendPiecesMovement: (move: Pick<MoveEventData, 'DestinationCell' | 'Piece'>) => {
-        // enviar pro servidor 
         if (!get().socketState?.socket || !move.Piece.piece?.moveset) return
 
         const payload: MoveEventData = {
@@ -68,6 +70,63 @@ const useGameSocket = create<GameboardContextProps>((set, get) => ({
             Data: payload
         })
     },
+    handleSendPromotePawnMessage: (piece: BoardCellData) => {
+        const payload: MoveEventData = {
+            DestinationCell: {
+                ...piece,
+                piece: {
+                    ...piece.piece!,
+                    owner: get().gameData.PlayerIs!
+                }
+            },
+            MovedAt: new Date(),
+            OwnerId: useAuth.getState()!.profileData!.id,
+            OwnerType: get().gameData.PlayerIs,
+
+            Piece: {
+                ...piece,
+                piece: {
+                    ...piece.piece!,
+                    owner: get().gameData.PlayerIs!
+                }
+            },
+            RoomId: get().gameData.MatchId,
+        }
+        get().socketState?.sendMessage({
+            Event: MatchEvents.PromotePawn,
+            Data: payload
+        })
+    },
+    handleReceivePromotePawnMessage: (piece: BoardCellData) => {
+        set(state => (
+            {
+                ...state,
+                board: state.board?.map(row => row.map(col => {
+                    if (col.cell == piece.cell) return {
+                        ...piece,
+                        piece: {
+                            ...piece.piece!,
+                            owner: piece.piece?.owner!
+                        }
+
+                    }
+                    return col
+                }
+                ))
+            }))
+    },
+    chatMessages: [],
+    handleSendChatMessage: (msg: ChatMessage) => {
+        get().socketState?.sendMessage({
+            Event: ChatEvents.SendMessage,
+            Data: msg
+        })
+    },
+    handleReceiveChatMessage: (msg: ChatMessage) => {
+        set(state => ({
+            chatMessages: [...state.chatMessages, msg]
+        }))
+    },
     socketState: {
         isMatchEnded: false,
         matchEndendMessage: null,
@@ -79,7 +138,7 @@ const useGameSocket = create<GameboardContextProps>((set, get) => ({
         socket: null,
         connect: () => {
             if (get().socketState?.socket?.readyState === WebSocket.OPEN) return
-            const socket = new WebSocket(`ws://localhost:5050/ws/play`)
+            const socket = new WebSocket(`ws://localhost:5050/match/ws/play`)
             console.log(socket)
             set(state => ({
                 socketState: {
@@ -105,6 +164,7 @@ const useGameSocket = create<GameboardContextProps>((set, get) => ({
         joinMatch: () => {
             set(state => ({ ...state, socketState: { ...state.socketState, isMatchFound: true } } as GameboardContextProps))
         },
+
         messages: [] as object[],
         sendMessage: (msg: object) => {
             const socket = get().socketState?.socket;
@@ -127,7 +187,9 @@ const useGameSocket = create<GameboardContextProps>((set, get) => ({
         //     }
         // }))
     },
-    gameData: {} as GameData,
+    gameData: {
+        isPlayerTurn: true
+    } as GameData,
     setGameData: (data: Partial<GameData>) => {
         console.log("setting game data")
         set(state => ({
