@@ -1,7 +1,8 @@
 export enum MatchEvents {
     MakeMove = "MakeMove",
     MoveMade = "MoveMade",
-
+    PromotePawn = "PromotePawn",
+    PawnPromoted = "PawnPromoted",
 
     MatchEnded = "MatchEnded",
 

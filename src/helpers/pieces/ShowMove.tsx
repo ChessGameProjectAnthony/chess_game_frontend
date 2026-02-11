@@ -6,6 +6,12 @@ import useGameSocket from "@/stores/Match/MatchSocketStore";
 import { MoveSetRegistry } from "./Pieces";
 
 let prev: BoardCellData[] | null;
+export function clearMovesShowing() {
+    prev?.forEach(cell => {
+        document.getElementById(cell.cell)?.setAttribute("data-possible", CellActions['unavailable'])
+    })
+    prev = null
+}
 
 export function ShowMove(cells: BoardCellData[], isToActivate: boolean, playerRole: PlayerType) {
     cells = cells.filter(Boolean)

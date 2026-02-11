@@ -8,6 +8,7 @@ import { GameboardContextProps, GameData } from "./MatchData"
 import { PlayerType } from "@/Enums/Match/PlayerType"
 import useAuth from "../AuthStore"
 import { MatchPlayerEvents } from "@/Enums/Match/MatchPlayerEvents"
+import { ChatEvents } from "@/Enums/Chat/ChatEvents"
 
 export type BaseSocketMessage<Event, Data> = {
     Event: Event
@@ -40,6 +41,9 @@ function findHandler(msg: MessageEvent) {
     if (Object.values(SearchMatchResponses).includes(eventName)) {
         handleQueueResponse(msg)
         return
+    }
+    if (Object.values(ChatEvents).includes(eventName)) {
+        handleChatResponse(msg)
     }
 }
 function handleMatchPlayerEventsResponse(msg: MessageEvent) {
@@ -84,7 +88,7 @@ function handleMatchResponse(msg: MessageEvent) {
 
     if (parsed.Event == MatchEvents.MoveMade) {
 
-        useGameSocket.setState(state => ({ gameData: { ...state.gameData, isPlayerTurn: parsed.Data.OwnerType !== ctx.gameData.PlayerIs } }))
+        // useGameSocket.setState(state => ({ gameData: { ...state.gameData, isPlayerTurn: parsed.Data.OwnerType !== ctx.gameData.PlayerIs } }))
 
         ctx.handleReceivePieceMovement(
             {
@@ -103,11 +107,14 @@ function handleMatchResponse(msg: MessageEvent) {
             BlackPlayerId: parsed.Data.BlackPlayerId,
             WhitePlayerId: parsed.Data.WhitePlayerId,
             OponnetIs: useAuth.getState()!.profileData!.id === parsed.Data.BlackPlayerId ? PlayerType.White : PlayerType.Black,
-
+            isPlayerTurn: true,
             PlayerIs: useAuth.getState()!.profileData!.id == parsed.Data.WhitePlayerId ? PlayerType.White : PlayerType.Black,
         })
 
-        if (ctx.gameData.PlayerIs == PlayerType.White) useGameSocket.setState(state => ({ gameData: { ...state.gameData, isPlayerTurn: true } }))
+        // useGameSocket.setState(state => ({ gameData: { ...state.gameData, isPlayerTurn: ctx.gameData.PlayerIs === PlayerType.White } }))
+    }
+    if (parsed.Event == MatchEvents.PawnPromoted) {
+        useGameSocket.getState().handleReceivePromotePawnMessage(parsed.Data.Piece)
     }
 }
 
@@ -126,4 +133,12 @@ function handleQueueResponse(msg: MessageEvent) {
 
     }
 
+}
+
+function handleChatResponse(msg: MessageEvent) {
+
+    const parsed = JSON.parse(msg.data)
+    if (parsed.Event == ChatEvents.MessageReceived) {
+        useGameSocket.getState().handleReceiveChatMessage(parsed.Data)
+    }
 }

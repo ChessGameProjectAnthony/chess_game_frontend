@@ -7,10 +7,13 @@ import { useGameboardContext } from "@/hooks/useGameboardContext"
 import { cn } from "@/helpers/cn"
 import useGameSocket from "@/stores/Match/MatchSocketStore"
 import { PlayerType } from "@/Enums/Match/PlayerType"
-import { MoveSetRegistry } from "@/helpers/pieces/Pieces"
+import { Bishop, King, Knight, MoveSetRegistry, Queen, Rook } from "@/helpers/pieces/Pieces"
 import { Button } from "../ui/button"
 import { PlayerInfo } from "./PlayerInfo"
 import { Chat } from "./Chat"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
+import { transformPawnKey } from "@/helpers/keyMaker"
+import { handleDisplayPromotePawnOptions } from "@/helpers/pieces/tranformPawn"
 
 
 export default function Gameboard() {
